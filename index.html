@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f3f5ef">
   <title>VocalFlow | Business English practice</title>
-  <style>
+<style>
     :root {
       color-scheme: light;
       --paper: #f3f5ef;
@@ -73,12 +73,28 @@
     .progress { height: 3px; margin-top: 16px; background: #edf0e9; }
     .progress > span { display: block; width: 8%; height: 100%; background: var(--green); transition: width .35s ease; }
     .phrase-area { min-height: 213px; display: flex; flex-direction: column; justify-content: center; padding: 22px 2px 17px; }
+    .phrase-area.has-passage { min-height: auto; justify-content: flex-start; }
+    .phrase-area.has-passage .phrase-tag { order: 1; }
+    .phrase-area.has-passage .speech-cues { order: 2; margin: 0 0 12px; }
+    .phrase-area.has-passage .phrase.paragraph { order: 3; }
+    .phrase-area.has-passage .phrase-hint { order: 4; }
     .phrase-tag { align-self: flex-start; margin-bottom: 16px; padding: 6px 9px; color: var(--green); background: #edf3e6; font-size: 9px; font-weight: 750; letter-spacing: 1.1px; text-transform: uppercase; }
     .phrase { max-width: 680px; margin: 0; font-family: var(--serif); font-size: clamp(28px, 4vw, 42px); font-weight: 400; line-height: 1.27; }
+    .phrase.paragraph { max-width: 100%; font-size: clamp(17px, 2vw, 21px); line-height: 1.9; }
     .phrase-hint { margin: 14px 0 0; color: var(--muted); font-size: 12px; }
     .speech-cues { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
     .cue { padding: 5px 8px; border: 1px solid #e4e9df; color: #536158; background: #fafbf7; font-size: 9px; line-height: 1.4; }
     .cue strong { color: var(--green); font-weight: 700; }
+    .inline-legend { display: flex; flex-wrap: wrap; gap: 7px 12px; margin: 0 0 12px; color: var(--muted); font-family: var(--sans); font-size: 9px; line-height: 1.5; }
+    .inline-legend span { white-space: nowrap; }
+    .inline-legend strong { color: var(--ink); font-weight: 650; }
+    .inline-mark { border-radius: 2px; }
+    .mark-stress { color: #173f32; font-weight: 700; text-decoration: underline; text-decoration-color: #9ab15f; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    .mark-link { color: #365b90; text-decoration: underline; text-decoration-style: dotted; text-decoration-color: #7893bb; text-underline-offset: 3px; }
+    .mark-reduction { color: #7d667f; background: #f3edf4; }
+    .mark-intonation { color: #bd644c; font-family: var(--sans); font-weight: 750; white-space: nowrap; }
+    .mark-ipa { color: #9a5d35; text-decoration: underline; text-decoration-style: dashed; text-decoration-color: #d3a783; text-underline-offset: 3px; }
+    .inline-ipa { display: inline-block; margin-left: 2px; color: #9a5d35; font-family: var(--sans); font-size: .65em; white-space: nowrap; }
     .divider { height: 1px; background: var(--line); }
     .listen-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 18px 0; }
     .listen-copy { display: flex; flex-direction: column; gap: 4px; }
@@ -107,11 +123,25 @@
     .score { color: var(--green); font-family: var(--serif); font-size: 25px; }
     .heard { margin: 7px 0 0; color: #536158; font-size: 11px; line-height: 1.55; }
     .feedback-note { margin: 6px 0 0; color: var(--muted); font-size: 9px; line-height: 1.55; }
-    .recording-player { width: 100%; height: 32px; margin-top: 8px; }
+    .replay-row { display: flex; align-items: center; gap: 11px; margin-top: 14px; }
+    .replay-row[hidden], .wave-wrap[hidden] { display: none; }
+    .replay-button { min-height: 36px; display: inline-flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid var(--green); color: var(--green); background: transparent; font-size: 10px; cursor: pointer; }
+    .replay-button:hover { color: white; background: var(--green); }
+    .replay-button svg { width: 14px; height: 14px; }
+    .replay-hint { color: var(--muted); font-size: 9px; }
     .wave-wrap { margin-top: 14px; padding: 11px 12px 8px; border: 1px solid var(--line); background: #fbfcf8; }
     .wave-head { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 9px; }
     .wave-head strong { color: var(--green); font-weight: 650; }
-    .waveform { display: block; width: 100%; height: 54px; margin-top: 6px; }
+    .wave-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 10px; color: var(--muted); font-size: 9px; }
+    .wave-legend[hidden] { display: none; }
+    .wave-key { display: inline-flex; align-items: center; gap: 6px; }
+    .wave-key::before { width: 16px; height: 2px; background: currentColor; content: ""; }
+    .wave-key.user { color: #c96548; }
+    .wave-key.guide { color: #365b90; }
+    .wave-key.guide::before { height: 0; border-top: 2px dashed currentColor; background: transparent; }
+    .wave-key.model { color: #c96548; }
+    .waveform { display: block; width: 100%; height: 150px; margin-top: 6px; }
+    .pitch-note { margin: 6px 0 0; color: var(--muted); font-size: 9px; line-height: 1.5; }
     .status { min-height: 18px; margin: 11px 0 0; color: var(--muted); font-size: 10px; }
 
     .side { display: flex; flex-direction: column; gap: 14px; }
@@ -141,6 +171,19 @@
     .filter-button { padding: 8px 12px; border: 1px solid var(--line); border-radius: 2px; color: var(--muted); background: rgba(255,255,255,.45); font-size: 10px; cursor: pointer; }
     .filter-button:hover, .filter-button.active { border-color: var(--green); color: var(--green); background: #edf3e6; }
     .corpus-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .corpus-subheading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 25px 0 12px; }
+    .corpus-subheading h3 { margin: 0; font-family: var(--serif); font-size: 20px; font-weight: 400; }
+    .corpus-subheading span { color: var(--muted); font-size: 9px; }
+    .passage-list { display: grid; gap: 12px; }
+    .passage-card { padding: 20px; border: 1px solid var(--line); background: var(--white); }
+    .passage-card-head { display: flex; justify-content: space-between; gap: 15px; align-items: baseline; margin-bottom: 12px; }
+    .passage-card-head h4 { margin: 5px 0 0; font-family: var(--serif); font-size: 21px; font-weight: 400; }
+    .passage-card .card-category { color: var(--green); font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .passage-card p { margin: 0; color: #34443b; font-family: var(--serif); font-size: 16px; line-height: 1.9; }
+    .passage-card-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+    .passage-card-footer span { color: var(--muted); font-size: 9px; }
+    .passage-practice { min-height: 34px; padding: 0 11px; border: 1px solid var(--green); color: var(--green); background: transparent; font-size: 10px; cursor: pointer; }
+    .passage-practice:hover { color: white; background: var(--green); }
     .corpus-card { min-height: 156px; display: flex; flex-direction: column; align-items: flex-start; padding: 17px; border: 1px solid var(--line); text-align: left; background: var(--white); cursor: pointer; transition: transform .18s, border-color .18s; }
     .corpus-card:hover { transform: translateY(-2px); border-color: #9baa94; }
     .corpus-card .card-category { color: var(--green); font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
@@ -150,6 +193,14 @@
     .studio-panel, .knowledge-card { padding: 24px; border: 1px solid var(--line); background: var(--white); }
     .studio-panel h3, .knowledge-card h3 { margin: 0; font-size: 13px; font-weight: 700; }
     .studio-panel > p, .knowledge-card > p { color: var(--muted); font-size: 11px; line-height: 1.65; }
+    .rhythm-scenarios { display: flex; flex-wrap: wrap; gap: 6px; margin: 14px 0; }
+    .rhythm-scene-button { padding: 7px 9px; border: 1px solid var(--line); color: var(--muted); background: transparent; font-size: 9px; cursor: pointer; }
+    .rhythm-scene-button.active, .rhythm-scene-button:hover { border-color: var(--green); color: var(--green); background: #edf3e6; }
+    .rhythm-track-label { margin: 15px 0 7px; color: var(--green); font-size: 9px; font-weight: 700; letter-spacing: .7px; text-transform: uppercase; }
+    .rhythm-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; }
+    .rhythm-actions .primary-small:disabled, .rhythm-actions .secondary-small:disabled { opacity: .5; cursor: not-allowed; }
+    .rhythm-disclaimer { margin: 10px 0 0; color: var(--muted); font-size: 9px; line-height: 1.5; }
+    .rhythm-progress { margin: 10px 0 0; color: var(--muted); font-size: 9px; }
     .tempo-display { display: flex; align-items: center; gap: 16px; margin: 22px 0; }
     .tempo-number { min-width: 84px; font-family: var(--serif); font-size: 52px; line-height: 1; }
     .tempo-number small { display: block; margin-top: 6px; color: var(--muted); font-family: var(--sans); font-size: 9px; }
@@ -215,6 +266,8 @@
       .skill-item:last-child { grid-column: span 2; border-top: 1px solid var(--line); }
       .section-heading { align-items: flex-start; flex-direction: column; }
       .corpus-grid, .knowledge-grid { grid-template-columns: 1fr; }
+      .passage-card { padding: 16px; }
+      .passage-card p { font-size: 15px; }
       .studio-panel, .knowledge-card { padding: 19px; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -262,7 +315,7 @@
         </div>
         <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
 
-        <div class="phrase-area" aria-live="polite">
+        <div class="phrase-area" id="phrase-area" aria-live="polite">
           <span class="phrase-tag" id="phrase-tag">Sharing an update</span>
           <p class="phrase" id="phrase">“Let me walk you through the latest numbers.”</p>
           <p class="phrase-hint" id="phrase-hint">Keep a steady pace. Give “latest” a clear final consonant.</p>
@@ -293,14 +346,26 @@
             </div>
           </div>
           <p class="status" id="status" role="status" aria-live="polite">Your recording stays in this browser session. Speech recognition may use your browser provider's service.</p>
+          <div class="replay-row" id="replay-row" hidden>
+            <button class="replay-button" id="replay-button" type="button" aria-label="Play your recording">
+              <svg id="replay-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" fill="currentColor" stroke="none"/></svg>
+              <span id="replay-label">Play my recording</span>
+            </button>
+            <span class="replay-hint">Listen back and compare the pitch movement below.</span>
+            <audio id="recording-player" hidden></audio>
+          </div>
           <div class="wave-wrap" id="wave-wrap" hidden>
-            <div class="wave-head"><strong>Your vocal wave</strong><span>Amplitude over time · not a pronunciation score</span></div>
-            <canvas class="waveform" id="waveform" role="img" aria-label="Amplitude waveform of your microphone recording"></canvas>
+            <div class="wave-head"><strong id="wave-title">Live microphone signal</strong><span id="wave-description">Amplitude · live input</span></div>
+            <div class="wave-legend" id="wave-legend" hidden>
+              <span class="wave-key user">Your pitch</span>
+              <span class="wave-key guide">Target intonation guide</span>
+            </div>
+            <canvas class="waveform" id="waveform" role="img" aria-label="Live microphone amplitude waveform"></canvas>
+            <p class="pitch-note" id="pitch-note" hidden>Pitch change is shown in semitones relative to your median pitch. The target curve illustrates a suggested rise and fall for this text; it is not a recorded model voice or a pronunciation score.</p>
           </div>
           <div class="feedback" id="feedback" aria-live="polite">
             <div class="feedback-head"><p class="feedback-title">Recognized words · text match</p><span class="score" id="score">—</span></div>
             <p class="heard" id="heard"></p>
-            <audio class="recording-player" id="recording-player" controls hidden></audio>
             <p class="feedback-note" id="feedback-note">This estimates word match only. It does not assess accent, intonation, or sound similarity.</p>
           </div>
         </div>
@@ -330,21 +395,31 @@
     <section class="view" id="view-corpus" aria-label="Business scenario library" hidden>
       <div class="section-heading">
         <div><p class="eyebrow">Speak for the moment</p><h2>Business scenario library</h2></div>
-        <p>Choose a real workplace situation. Listen, shadow the model, and practise at your own pace.</p>
+        <p>Choose a real workplace situation. Practise a quick phrase or shadow a complete passage with rhythm, linking, and intonation marked in context.</p>
       </div>
       <div class="filter-row" id="corpus-filters" aria-label="Filter by scenario"></div>
+      <div class="corpus-subheading"><h3>Quick phrases</h3><span>Short, focused practice</span></div>
       <div class="corpus-grid" id="corpus-grid"></div>
+      <div class="corpus-subheading"><h3>Long-form shadowing</h3><span>Read the markings in context, then practise the whole passage</span></div>
+      <div class="inline-legend" aria-label="Passage annotation legend">
+        <span><strong class="mark-stress">Underline</strong> main stress</span>
+        <span><strong class="mark-link">Dotted</strong> linking</span>
+        <span><strong class="mark-reduction">Tint</strong> weak form</span>
+        <span><strong class="mark-intonation">↗ ↘</strong> pitch movement</span>
+        <span><strong class="mark-ipa">Dashed</strong> IPA note</span>
+      </div>
+      <div class="passage-list" id="passage-list"></div>
     </section>
 
     <section class="view" id="view-rhythm" aria-label="Rhythm studio" hidden>
       <div class="section-heading">
         <div><p class="eyebrow">Find the beat</p><h2>Rhythm studio</h2></div>
-        <p>Feel the beat, then grow a business phrase in small, manageable chunks.</p>
+        <p>Choose a business scene, practise 24 phrases one by one, and follow a spoken model against the beat.</p>
       </div>
       <div class="studio-grid">
         <section class="studio-panel">
           <h3>Metronome</h3>
-          <p>Set a comfortable pulse. Notice how stressed words land on the beat while smaller words flow between them.</p>
+          <p>Set a comfortable pulse. The lead targets about two words per beat, starts on the first beat, and uses a steadier pace to stay close to the metronome.</p>
           <div class="tempo-display">
             <div class="tempo-number"><span id="tempo-value">72</span><small>BEATS PER MINUTE</small></div>
             <div class="beat-dots" id="beat-dots" aria-label="Four-beat meter">
@@ -355,16 +430,20 @@
           <div class="metronome-actions"><button class="primary-small" id="metronome-toggle" type="button">Start metronome</button><button class="secondary-small" id="metronome-reset" type="button">Reset</button></div>
         </section>
         <section class="studio-panel">
-          <h3>Build the phrase</h3>
-          <p>Tap each step. Keep the beat steady as the thought gets longer.</p>
-          <div class="step-list" id="rhythm-steps">
-            <button class="step-button active" type="button" data-step="0"><span>01</span><strong>Good morning.</strong></button>
-            <button class="step-button" type="button" data-step="1"><span>02</span><strong>Good morning, everyone.</strong></button>
-            <button class="step-button" type="button" data-step="2"><span>03</span><strong>Good morning, everyone. Thanks for joining.</strong></button>
-            <button class="step-button" type="button" data-step="3"><span>04</span><strong>Good morning, everyone. Thanks for joining on time.</strong></button>
+          <h3>Business phrase library</h3>
+          <p>Choose a scene and work through its phrases in order, from a short opening to a fuller business thought.</p>
+          <div class="rhythm-scenarios" id="rhythm-scenarios" aria-label="Choose a business scene"></div>
+          <p class="rhythm-track-label" id="rhythm-track-label"></p>
+          <div class="step-list" id="rhythm-steps" aria-label="Phrases in this practice set"></div>
+          <div class="build-sentence" id="build-sentence" aria-live="polite"></div>
+          <p id="rhythm-tip">Stress the key meaning words; let smaller words flow between beats.</p>
+          <div class="rhythm-actions">
+            <button class="secondary-small" id="rhythm-previous" type="button">Previous</button>
+            <button class="primary-small" id="rhythm-lead" type="button">Play lead with beat</button>
+            <button class="secondary-small" id="rhythm-next" type="button">Next phrase</button>
           </div>
-          <div class="build-sentence" id="build-sentence" aria-live="polite">Good morning.</div>
-          <p>Tip: give <strong>morning</strong> and <strong>joining</strong> a clear beat; let the other words stay light.</p>
+          <p class="rhythm-progress" id="rhythm-progress" aria-live="polite"></p>
+          <p class="rhythm-disclaimer">The lead targets about two words per beat with less variation in pace. Browser voices vary, so individual words may still drift from exact beats.</p>
         </section>
       </div>
     </section>
@@ -401,6 +480,201 @@
       { category: "Negotiation", tag: "Discussing a timeline", text: "Would it be possible to bring the review forward by a week?", hint: "Keep “would it be possible” clear, then emphasize the proposed timing.", tip: "Pair a request with a specific, realistic alternative." },
       { category: "Meetings", tag: "Summarising a decision", text: "So we are aligned on the timeline and the key deliverables.", hint: "Give “timeline” and “deliverables” equal weight in your summary.", tip: "End a decision recap by checking that everyone is aligned." },
       { category: "Client calls", tag: "Managing expectations", text: "We are on track to share an update by Thursday afternoon.", hint: "Say the deadline clearly; avoid letting the final words trail off.", tip: "A concrete time builds trust and prevents crossed wires." }
+    ];
+
+    const phraseSegments = [
+      [
+        { text: "Let " }, { text: "me", kind: "reduction", note: "Keep this pronoun light before the main message." }, { text: " " },
+        { text: "walk‿you", kind: "link", note: "Let the final consonant flow into “you”.", spoken: "walk you" }, { text: " through the " },
+        { text: "latest", kind: "ipa", ipa: "/ˈleɪtɪst/", note: "Broad British-English IPA; stress the first syllable." },
+        { text: " " }, { text: "numbers", kind: "stress" }, { text: ". ↘", kind: "intonation", note: "A falling contour completes the update." }
+      ],
+      [
+        { text: "Could you", kind: "reduction", note: "In a polite request, “could you” often reduces and flows together." }, { text: " " },
+        { text: "clarify", kind: "ipa", ipa: "/ˈklærɪfaɪ/", note: "Broad British-English IPA; stress the first syllable." },
+        { text: " what " }, { text: "the", kind: "reduction", note: "This article is usually unstressed." }, { text: " " },
+        { text: "priority‿is", kind: "link", note: "Link the final vowel glide smoothly into “is”.", spoken: "priority is" }, { text: " for this " }, { text: "week", kind: "stress" },
+        { text: "? ↗", kind: "intonation", note: "A gentle rise makes the clarification sound collaborative." }
+      ],
+      [
+        { text: "Based on these " }, { text: "results", kind: "stress" }, { text: ", " },
+        { text: "I would", kind: "reduction", note: "“Would” is often shortened and unstressed before the main verb." }, { text: " " },
+        { text: "recommend‿a", kind: "link", note: "Link the final consonant into the following vowel.", spoken: "recommend a" },
+        { text: " " }, { text: "phased", kind: "ipa", ipa: "/feɪzd/", note: "Broad British-English IPA." },
+        { text: " " }, { text: "rollout", kind: "stress" }, { text: ". ↘", kind: "intonation", note: "A falling contour gives the recommendation a clear finish." }
+      ],
+      [
+        { text: "What " }, { text: "has your", kind: "reduction", note: "“Has your” often becomes a light connected phrase." },
+        { text: " " }, { text: "team", kind: "stress" }, { text: " been " },
+        { text: "focusing‿on", kind: "link", note: "Connect the final consonant to the following vowel.", spoken: "focusing on" },
+        { text: " " }, { text: "recently", kind: "ipa", ipa: "/ˈriːsəntli/", note: "Broad British-English IPA; stress the first syllable." },
+        { text: "? ↗", kind: "intonation", note: "A light rise keeps the question open and conversational." }
+      ],
+      [
+        { text: "I " }, { text: "think", kind: "stress" }, { text: " we " },
+        { text: "can", kind: "reduction", note: "The modal is usually light before the main verb." }, { text: " find " },
+        { text: "an‿approach", kind: "link", ipa: "/əˈprəʊtʃ/", note: "Link the final consonant into the vowel; broad British-English IPA, with stress on the second syllable.", spoken: "an approach" },
+        { text: " that works for " }, { text: "both teams", kind: "stress" },
+        { text: ". ↘", kind: "intonation", note: "A falling contour emphasizes a shared outcome." }
+      ],
+      [
+        { text: "I " }, { text: "would", kind: "reduction", note: "“Would” is usually unstressed in this polite phrase." },
+        { text: " be " }, { text: "interested", kind: "ipa", ipa: "/ˈɪntrəstɪd/", note: "Broad British-English IPA; the middle syllables are often compressed." },
+        { text: " to " }, { text: "hear", kind: "stress" }, { text: " " }, { text: "your", kind: "reduction", note: "Keep this possessive light before the key noun." },
+        { text: " " }, { text: "perspective", kind: "ipa", ipa: "/pəˈspektɪv/", note: "Broad British-English IPA; stress the second syllable." },
+        { text: "‿on", kind: "link", note: "Link the final consonant into the following vowel.", spoken: " on" }, { text: " this" },
+        { text: ". ↘", kind: "intonation", note: "A gentle fall makes the invitation sound complete." }
+      ],
+      [
+        { text: "I " }, { text: "will", kind: "reduction", note: "In this context, “will” often contracts to /əl/." },
+        { text: " " }, { text: "send‿a", kind: "link", note: "Connect the final consonant to the following vowel.", spoken: "send a" },
+        { text: " summary with the " }, { text: "next steps", kind: "stress" },
+        { text: " this " }, { text: "afternoon", kind: "ipa", ipa: "/ˌɑːftəˈnuːn/", note: "Broad British-English IPA; main stress is on the final syllable." },
+        { text: ". ↘", kind: "intonation", note: "Let the deadline land with a clear falling finish." }
+      ],
+      [
+        { text: "With " }, { text: "that‿in", kind: "link", note: "Join the final consonant into the next vowel.", spoken: "that in" },
+        { text: " " }, { text: "mind", kind: "stress" }, { text: ", " },
+        { text: "let us", kind: "reduction", note: "“Let us” often contracts to “let’s” in fluent speech." },
+        { text: " " }, { text: "look‿at", kind: "link", note: "Connect the final consonant to the following vowel.", spoken: "look at" },
+        { text: " the " }, { text: "second", kind: "ipa", ipa: "/ˈsekənd/", note: "Broad British-English IPA; stress the first syllable." },
+        { text: " " }, { text: "option", kind: "stress" }, { text: ". ↘", kind: "intonation", note: "A falling contour signals a clear transition." }
+      ],
+      [
+        { text: "I " }, { text: "work‿with", kind: "link", note: "Link the final consonant into the next word.", spoken: "work with" },
+        { text: " " }, { text: "regional", kind: "ipa", ipa: "/ˈriːdʒənəl/", note: "Broad British-English IPA; stress the first syllable." },
+        { text: " " }, { text: "teams", kind: "stress" }, { text: " " },
+        { text: "to", kind: "reduction", note: "Keep the infinitive marker light before the verb." },
+        { text: " improve the " }, { text: "customer experience", kind: "stress" },
+        { text: ". ↘", kind: "intonation", note: "A falling contour completes the introduction." }
+      ],
+      [
+        { text: "Would it", kind: "reduction", note: "These words often flow together in a polite question." },
+        { text: " be " }, { text: "possible", kind: "ipa", ipa: "/ˈpɒsəbəl/", note: "Broad British-English IPA; stress the first syllable." },
+        { text: " to " }, { text: "bring‿the", kind: "link", note: "Keep this word boundary smooth without adding a pause.", spoken: "bring the" },
+        { text: " review " }, { text: "forward", kind: "stress" }, { text: " by " },
+        { text: "a week", kind: "stress" }, { text: "? ↗", kind: "intonation", note: "A gentle rise leaves room for negotiation." }
+      ],
+      [
+        { text: "So " }, { text: "we are", kind: "reduction", note: "“We are” often contracts to a short /wɪə/ sound." },
+        { text: " " }, { text: "aligned", kind: "stress" }, { text: " " },
+        { text: "on‿the", kind: "link", note: "Connect the final consonant into the next word.", spoken: "on the" },
+        { text: " " }, { text: "timeline", kind: "ipa", ipa: "/ˈtaɪmlaɪn/", note: "Broad British-English IPA; stress the first syllable." },
+        { text: " and the key " }, { text: "deliverables", kind: "stress" },
+        { text: ". ↘", kind: "intonation", note: "A falling contour signals a completed summary." }
+      ],
+      [
+        { text: "We are", kind: "reduction", note: "“We are” often contracts to /wɪə/ in connected speech." },
+        { text: " " }, { text: "on track", kind: "stress" }, { text: " " },
+        { text: "to", kind: "reduction", note: "The infinitive marker is usually unstressed." },
+        { text: " " }, { text: "share‿an", kind: "link", note: "Link the final consonant to the following vowel.", spoken: "share an" },
+        { text: " " }, { text: "update", kind: "stress" }, { text: " by " },
+        { text: "Thursday", kind: "ipa", ipa: "/ˈθɜːzdeɪ/", note: "Broad British-English IPA; stress the first syllable." },
+        { text: " " }, { text: "afternoon", kind: "stress" },
+        { text: ". ↘", kind: "intonation", note: "A steady falling finish makes the deadline clear." }
+      ]
+    ];
+
+    phrases.forEach((phrase, index) => { phrase.segments = phraseSegments[index]; });
+
+    const passages = [
+      {
+        category: "Meetings",
+        tag: "Weekly project update",
+        title: "Opening a project check-in",
+        hint: "Keep the update moving in thought groups. Let the final question rise gently.",
+        tip: "State the key update, decision needed, and next step in that order.",
+        segments: [
+          { text: "Thanks for " }, { text: "making time", kind: "stress", note: "Give the key phrase a clear beat." }, { text: " for the " }, { text: "weekly check-in", kind: "stress", note: "Emphasize the meeting purpose." }, { text: ". ", kind: "plain" },
+          { text: "I’ll " }, { text: "start with", kind: "stress" }, { text: " the client launch, which is " }, { text: "on‿track", kind: "link", note: "Link the final consonant into the next word.", spoken: "on track" }, { text: " for " }, { text: "Friday", kind: "ipa", ipa: "/ˈfraɪdeɪ/", note: "Broad British-English IPA." }, { text: ". ", kind: "plain" },
+          { text: "The design is ready, and we’ve resolved the issue with the " }, { text: "booking flow", kind: "stress" }, { text: ". ", kind: "plain" },
+          { text: "We still need " }, { text: "final approval", kind: "stress" }, { text: " from Finance, so I’ll share the revised forecast after this meeting. ", kind: "plain" },
+          { text: "Before we move on, ", kind: "plain" }, { text: "does anyone", kind: "reduction", note: "In connected speech, “does anyone” may be said more lightly between the key words." }, { text: " see a " }, { text: "risk", kind: "stress" }, { text: " we should address today", kind: "stress" }, { text: "? ↗", kind: "intonation", note: "Gentle rise invites the team to contribute." }
+        ]
+      },
+      {
+        category: "Client calls",
+        tag: "Resolving a service issue",
+        title: "Handling a delayed delivery",
+        hint: "Sound calm and helpful. Use a small pause before the clear next step.",
+        tip: "Acknowledge the concern before explaining the action and timing.",
+        segments: [
+          { text: "Thanks for letting me know about the delay. I understand this affects your " }, { text: "launch date", kind: "stress" }, { text: ". ", kind: "plain" },
+          { text: "I’ve checked with our operations team, and the replacement shipment is now " }, { text: "on‿its‿way", kind: "link", note: "Connect the consonants smoothly into the following vowels.", spoken: "on its way" }, { text: ". ", kind: "plain" },
+          { text: "It should arrive by " }, { text: "Thursday afternoon", kind: "stress" }, { text: ", and I’ll email you the tracking details as soon as they’re available. ", kind: "plain" },
+          { text: "If anything changes, please " }, { text: "call‿us", kind: "link", note: "Link the final consonant into “us”.", spoken: "call us" }, { text: " directly. ", kind: "plain" },
+          { text: "Would that", kind: "reduction", note: "This short question phrase often flows together in natural speech." }, { text: " timeline work for you", kind: "stress" }, { text: "? ↗", kind: "intonation", note: "Rising pitch makes this a genuine check-in." }
+        ]
+      },
+      {
+        category: "Presentations",
+        tag: "Presenting quarterly results",
+        title: "Sharing a recommendation",
+        hint: "Group the result, reason, and recommendation. Pause briefly before your proposal.",
+        tip: "Make the recommendation easy to hear by stressing the action and expected result.",
+        segments: [
+          { text: "I’ll begin with the " }, { text: "quarterly results", kind: "stress" }, { text: ". Revenue grew by eight percent, while customer retention remained steady. ", kind: "plain" },
+          { text: "The strongest improvement came from the " }, { text: "online service team", kind: "stress" }, { text: ", where response times fell by almost a third. ", kind: "plain" },
+          { text: "Based on these results, " }, { text: "I’d", kind: "reduction", note: "The contracted auxiliary is usually unstressed here." }, { text: " " }, { text: "recommend‿a", kind: "link", note: "Let the final consonant connect to the following vowel.", spoken: "recommend a" }, { text: " phased rollout next month. ", kind: "plain" },
+          { text: "That gives us time to test the new process with a small group before expanding it across the region. ", kind: "plain" },
+          { text: "I’ll pause there and take your " }, { text: "questions", kind: "ipa", ipa: "/ˈkwestʃənz/", note: "Broad British-English IPA." }, { text: " before we review the timeline", kind: "stress" }, { text: ". ↘", kind: "intonation", note: "Falling pitch signals a complete thought." }
+        ]
+      },
+      {
+        category: "Networking",
+        tag: "Introducing yourself",
+        title: "Starting a conference conversation",
+        hint: "Keep your introduction warm and unhurried; let your question invite a reply.",
+        tip: "A clear introduction followed by an open question makes conversation easier.",
+        segments: [
+          { text: "Hi, I’m Alex. I work with " }, { text: "regional teams", kind: "stress" }, { text: " " }, { text: "to", kind: "reduction", note: "The preposition is usually light before the stressed verb." }, { text: " improve the customer experience across " }, { text: "Asia", kind: "ipa", ipa: "/ˈeɪʒə/", note: "Broad British-English IPA." }, { text: ". ", kind: "plain" },
+          { text: "At the moment, we’re helping our colleagues make their " }, { text: "digital services", kind: "stress" }, { text: " easier to use. ", kind: "plain" },
+          { text: "I’ve been especially interested in how small changes to the sign-up process can make a real difference. ", kind: "plain" },
+          { text: "What kind of projects are you " }, { text: "working‿on", kind: "link", note: "Link the final consonant to “on”.", spoken: "working on" }, { text: " this year", kind: "stress" }, { text: "? ↗", kind: "intonation", note: "A gentle rise keeps this open question inviting." }
+        ]
+      },
+      {
+        category: "Negotiation",
+        tag: "Agreeing a revised timeline",
+        title: "Finding a workable timeline",
+        hint: "Emphasize the shared outcome, then soften the request and leave room for a response.",
+        tip: "Offer a specific alternative and check that it works for both sides.",
+        segments: [
+          { text: "I understand the original " }, { text: "deadline", kind: "ipa", ipa: "/ˈdedlaɪn/", note: "Broad British-English IPA." }, { text: " is important. We’ve " }, { text: "reviewed‿the", kind: "link", note: "Link the final consonant into “the”.", spoken: "reviewed the" }, { text: " remaining work with both teams, and the testing stage needs a little more time. ", kind: "plain" },
+          { text: "Would it be possible", kind: "reduction", note: "These small words often flow together in natural speech." }, { text: " to move the handover to " }, { text: "next Wednesday", kind: "stress" }, { text: "? ", kind: "plain" },
+          { text: "That would give us time to check the final reports without changing the client review date. ", kind: "plain" },
+          { text: "We can also send you a progress update by Friday, so you’ll have " }, { text: "a clear view", kind: "stress" }, { text: " of what’s complete. ", kind: "plain" },
+          { text: "Does that sound like a " }, { text: "reasonable plan", kind: "stress" }, { text: "? ↗", kind: "intonation", note: "Use a gentle rise to invite agreement or discussion." }
+        ]
+      },
+      {
+        category: "Interviews",
+        tag: "Describing your experience",
+        title: "Answering a project question",
+        hint: "Use a steady pace through the context, then give your actions and result the main stress.",
+        tip: "A concise example is easier to follow when you signpost the outcome.",
+        segments: [
+          { text: "In my last role, I helped coordinate a " }, { text: "regional launch", kind: "stress" }, { text: " for a new customer support " }, { text: "platform", kind: "ipa", ipa: "/ˈplætfɔːm/", note: "Broad British-English IPA." }, { text: ". ", kind: "plain" },
+          { text: "The teams were working across different time zones, " }, { text: "so", kind: "reduction", note: "Keep this connector light; stress the action that follows." }, { text: " I set up a shared tracker and a short weekly check-in. ", kind: "plain" },
+          { text: "That made it easier to spot delays early, " }, { text: "so", kind: "reduction", note: "Keep this connector light; stress the result that follows." }, { text: " we could agree on who would handle each issue. ", kind: "plain" },
+          { text: "We delivered the project " }, { text: "on‿time", kind: "link", note: "Connect the consonant into the vowel that follows.", spoken: "on time" }, { text: ", and customer response times improved by fifteen percent. ", kind: "plain" },
+          { text: "The experience taught me how " }, { text: "clear communication", kind: "stress" }, { text: " can keep a complex project moving", kind: "stress" }, { text: ". ↘", kind: "intonation", note: "Falling pitch gives your example a confident finish." }
+        ]
+      },
+      {
+        category: "Teamwork",
+        tag: "Handing over a task",
+        title: "Giving a clear handover",
+        hint: "Make the owner, deadline, and next action easy to hear.",
+        tip: "A handover works best when the next person knows exactly what to do and when.",
+        segments: [
+          { text: "I’ve finished the first review of the supplier proposal and added my notes to the shared folder. ", kind: "plain" },
+          { text: "The main item to confirm is the " }, { text: "delivery schedule", kind: "stress" }, { text: ", because the current estimate differs from the client’s request. ", kind: "plain" },
+          { text: "Could you", kind: "reduction", note: "In a polite request, these words often connect and reduce." }, { text: " " }, { text: "check‿with", kind: "link", note: "Link the final consonant into the following word.", spoken: "check with" }, { text: " the supplier this morning and ask them to confirm the dates? ", kind: "plain" },
+          { text: "Once we have that, I can update the proposal and send it to the client before " }, { text: "three o’clock", kind: "ipa", ipa: "/θriː əˈklɒk/", note: "Broad British-English IPA." }, { text: ". ", kind: "plain" },
+          { text: "Let me know if you need any more context", kind: "stress" }, { text: ". ↘", kind: "intonation", note: "Falling pitch signals a complete offer." }
+        ]
+      }
     ];
 
     const phraseCues = [
@@ -442,11 +716,75 @@
       }
     ];
 
+    const rhythmTracks = [
+      {
+        category: "Meetings",
+        title: "Opening a team meeting",
+        phrases: [
+          "Let’s begin.",
+          "Let’s begin with today’s agenda.",
+          "Let’s begin with today’s agenda and key priorities.",
+          "Let’s begin with today’s agenda, key priorities, and the decisions we need to make."
+        ]
+      },
+      {
+        category: "Client calls",
+        title: "Responding to a client",
+        phrases: [
+          "Thanks for calling.",
+          "Thanks for calling about the delivery.",
+          "Thanks for calling about the delayed delivery; I understand the timing is important.",
+          "Thanks for calling about the delayed delivery; I’ll check with our operations team and call you back this afternoon."
+        ]
+      },
+      {
+        category: "Presentations",
+        title: "Presenting a recommendation",
+        phrases: [
+          "Here are the results.",
+          "Here are the results from this quarter.",
+          "Here are the results from this quarter, with steady growth in three regions.",
+          "Here are the results from this quarter; based on the growth across all three regions, I recommend a phased rollout."
+        ]
+      },
+      {
+        category: "Negotiation",
+        title: "Finding a workable agreement",
+        phrases: [
+          "We can adjust the timeline.",
+          "We can adjust the timeline by one week.",
+          "We can adjust the timeline by one week to give both teams time to review.",
+          "We can adjust the timeline by one week, giving both teams more time to review the proposal before the client meeting."
+        ]
+      },
+      {
+        category: "Networking",
+        title: "Starting a conversation",
+        phrases: [
+          "I work with regional teams.",
+          "I work with regional teams across Asia.",
+          "I work with regional teams across Asia to improve customer experience.",
+          "I work with regional teams across Asia to improve customer experience, especially during new product launches."
+        ]
+      },
+      {
+        category: "Teamwork",
+        title: "Giving a clear handover",
+        phrases: [
+          "The review is complete.",
+          "The first review is complete, and I’ve added my notes.",
+          "The first review is complete, and I’ve added my notes to the shared folder for feedback.",
+          "The first review is complete; I’ve added my notes to the shared folder, and could you confirm the delivery dates by this afternoon?"
+        ]
+      }
+    ];
+
     const $ = (id) => document.getElementById(id);
     const recognitionAvailable = "SpeechRecognition" in window || "webkitSpeechRecognition" in window;
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     let order = [];
     let phraseIndex = 0;
+    let selectedPracticeItem;
     let practiced = 3;
     let bestScore = 0;
     let mediaRecorder;
@@ -459,16 +797,30 @@
     let recognitionDone = true;
     let finalized = false;
     let recording = false;
+    let finalizingRecording = false;
     let recordingUrl;
     let toastTimer;
     let waveformContext;
     let waveformAnalyser;
     let waveformSource;
+    let waveformSink;
     let waveformFrame;
     let waveformSamples = [];
+    let waveformAmplitude = 0;
+    let modelAnimationFrame;
+    let modelPlaybackToken = 0;
+    let modelBoundarySupported = false;
+    let modelPlaybackStartedAt = 0;
+    let modelPlaybackDuration = 0;
+    let modelContour = [];
     let metronomeContext;
     let metronomeTimer;
     let metronomeBeat = 0;
+    let metronomeMode;
+    let rhythmLeadPending = false;
+    let rhythmLeadToken = 0;
+    let rhythmTrackIndex = 0;
+    let rhythmPhraseIndex = 0;
     let corpusCategory = "All";
     let quizIndex = 0;
     let quizScore = 0;
@@ -483,38 +835,110 @@
       phraseIndex = 0;
     }
 
-    function currentPhrase() { return phrases[order[phraseIndex]]; }
+    function currentPhrase() { return selectedPracticeItem || phrases[order[phraseIndex]]; }
+
+    function passageText(segments) {
+      return segments
+        .map((segment) => segment.spoken || segment.text.replaceAll("‿", " ").replace(/[↗↘]/g, ""))
+        .join("");
+    }
+
+    function createInlineLegend() {
+      return [
+        ["mark-stress", "Underline", "main stress"],
+        ["mark-link", "Dotted", "linking"],
+        ["mark-reduction", "Tint", "weak form"],
+        ["mark-intonation", "↗ ↘", "intonation"],
+        ["mark-ipa", "Dashed", "IPA"]
+      ].map(([mark, label, description]) => {
+        const item = document.createElement("span");
+        const key = document.createElement("strong");
+        key.className = mark;
+        key.textContent = label;
+        item.append(key, document.createTextNode(` ${description}`));
+        return item;
+      });
+    }
+
+    function renderAnnotatedText(segments) {
+      const fragment = document.createDocumentFragment();
+      segments.forEach((segment) => {
+        if (!segment.kind || segment.kind === "plain") {
+          fragment.append(document.createTextNode(segment.text));
+          return;
+        }
+        const marked = document.createElement("span");
+        marked.className = `inline-mark mark-${segment.kind}`;
+        if (segment.note) marked.title = segment.note;
+        marked.textContent = segment.text;
+        if (segment.ipa) {
+          const ipa = document.createElement("span");
+          ipa.className = "inline-ipa";
+          ipa.textContent = segment.ipa;
+          ipa.setAttribute("aria-label", `IPA ${segment.ipa}`);
+          marked.append(ipa);
+        }
+        fragment.append(marked);
+      });
+      return fragment;
+    }
 
     function showPhrase() {
+      stopModelVisualization();
+      window.speechSynthesis?.cancel();
       const item = currentPhrase();
+      const isPassage = item === selectedPracticeItem;
       $("category-label").textContent = item.category;
       $("phrase-tag").textContent = item.tag;
-      $("phrase").textContent = `“${item.text}”`;
+      const phraseElement = $("phrase");
+      phraseElement.classList.toggle("paragraph", isPassage);
+      phraseElement.replaceChildren(item.segments ? renderAnnotatedText(item.segments) : document.createTextNode(`“${item.text}”`));
+      $("phrase-area").classList.toggle("has-passage", isPassage);
       $("phrase-hint").textContent = item.hint;
-      $("speech-cues").replaceChildren(...phraseCues[order[phraseIndex]].map((cueText) => {
-        const cue = document.createElement("span");
-        const separator = cueText.indexOf(" · ");
-        const label = document.createElement("strong");
-        label.textContent = cueText.slice(0, separator);
-        cue.append(label, document.createTextNode(cueText.slice(separator)));
-        cue.className = "cue";
-        return cue;
-      }));
+      $("speech-cues").classList.add("inline-legend");
+      if (isPassage) {
+        $("speech-cues").replaceChildren(...createInlineLegend());
+        $("counter").textContent = "Long passage";
+        $("progress-bar").style.width = "100%";
+      } else {
+        const cues = phraseCues[order[phraseIndex]].map((cueText) => {
+          const cue = document.createElement("span");
+          const separator = cueText.indexOf(" · ");
+          const label = document.createElement("strong");
+          label.textContent = cueText.slice(0, separator);
+          cue.append(label, document.createTextNode(cueText.slice(separator)));
+          cue.className = "cue";
+          return cue;
+        });
+        $("speech-cues").replaceChildren(...createInlineLegend(), ...cues);
+        $("counter").textContent = `Phrase ${String(phraseIndex + 1).padStart(2, "0")}`;
+        $("progress-bar").style.width = `${((phraseIndex + 1) / phrases.length) * 100}%`;
+      }
       $("delivery-tip").textContent = item.tip;
-      $("counter").textContent = `Phrase ${String(phraseIndex + 1).padStart(2, "0")}`;
-      $("progress-bar").style.width = `${((phraseIndex + 1) / phrases.length) * 100}%`;
       $("feedback").classList.remove("visible");
       $("recording-player").hidden = true;
       $("recording-player").pause();
+      $("replay-row").hidden = true;
+      $("replay-label").textContent = "Play my recording";
+      $("replay-button").setAttribute("aria-label", "Play your recording");
       if (recordingUrl) URL.revokeObjectURL(recordingUrl);
       recordingUrl = undefined;
       $("recording-player").removeAttribute("src");
       $("wave-wrap").hidden = true;
+      $("wave-legend").hidden = true;
+      $("pitch-note").hidden = true;
+      $("wave-title").textContent = "Live microphone signal";
+      $("wave-description").textContent = "Amplitude · live input";
+      $("waveform").setAttribute("aria-label", "Live microphone amplitude waveform");
       cancelAnimationFrame(waveformFrame);
       waveformSource?.disconnect();
+      waveformAnalyser?.disconnect();
+      waveformSink?.disconnect();
       waveformSource = undefined;
       waveformAnalyser = undefined;
+      waveformSink = undefined;
       waveformSamples = [];
+      waveformAmplitude = 0;
       $("status").textContent = recognitionAvailable ? "Your recording stays in this browser session. Speech recognition may use your browser provider's service." : "Recording is available, but speech recognition is not supported in this browser.";
     }
 
@@ -523,14 +947,153 @@
         showToast("Speech playback is not supported in this browser.");
         return;
       }
+      if (window.speechSynthesis.speaking) {
+        stopModelVisualization();
+        window.speechSynthesis.cancel();
+        $("listen-button").lastChild.textContent = "Play model";
+        return;
+      }
+      stopModelVisualization();
       window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(currentPhrase().text);
+      const text = currentPhrase().text;
+      const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = "en-GB";
       utterance.rate = 0.88;
       const voices = window.speechSynthesis.getVoices();
       const britishVoice = voices.find((voice) => voice.lang === "en-GB");
       if (britishVoice) utterance.voice = britishVoice;
+      const token = ++modelPlaybackToken;
+      utterance.onstart = () => {
+        if (token !== modelPlaybackToken) return;
+        startModelVisualization(text, utterance.rate, token);
+        $("listen-button").lastChild.textContent = "Stop model";
+      };
+      utterance.onboundary = (event) => {
+        if (token !== modelPlaybackToken || !Number.isFinite(event.charIndex)) return;
+        modelBoundarySupported = true;
+        cancelAnimationFrame(modelAnimationFrame);
+        const progress = Math.min(1, event.charIndex / Math.max(1, text.length));
+        drawModelContour(progress);
+      };
+      utterance.onend = () => {
+        if (token !== modelPlaybackToken) return;
+        cancelAnimationFrame(modelAnimationFrame);
+        drawModelContour(1);
+        $("listen-button").lastChild.textContent = "Play model";
+      };
+      utterance.onerror = () => {
+        if (token !== modelPlaybackToken) return;
+        stopModelVisualization();
+        $("listen-button").lastChild.textContent = "Play model";
+        showToast("Model voice playback could not be completed.");
+      };
       window.speechSynthesis.speak(utterance);
+    }
+
+    function stopModelVisualization() {
+      cancelAnimationFrame(modelAnimationFrame);
+      modelPlaybackToken += 1;
+      modelBoundarySupported = false;
+      modelContour = [];
+    }
+
+    function startModelVisualization(text, rate, token) {
+      $("wave-wrap").hidden = false;
+      $("wave-title").textContent = "Model voice · intonation guide";
+      $("wave-description").textContent = "Suggested pitch contour · follows playback";
+      $("wave-legend").replaceChildren();
+      const modelKey = document.createElement("span");
+      modelKey.className = "wave-key model";
+      modelKey.textContent = "Model voice guide";
+      const guideKey = document.createElement("span");
+      guideKey.className = "wave-key guide";
+      guideKey.textContent = "Suggested pitch contour";
+      $("wave-legend").append(modelKey, guideKey);
+      $("wave-legend").hidden = false;
+      $("pitch-note").textContent = "The highlighted trace follows model playback; the browser does not expose the synthesized voice’s actual waveform or measured pitch. This is a visual intonation guide, not a recording or pronunciation score.";
+      $("pitch-note").hidden = false;
+      $("waveform").setAttribute("aria-label", "Animated suggested pitch contour synchronized to model voice playback");
+
+      const wordCount = text.trim().split(/\s+/).length;
+      modelPlaybackDuration = Math.max(1.5, wordCount / (2.4 * (rate / 0.88)));
+      modelPlaybackStartedAt = performance.now();
+      modelBoundarySupported = false;
+      modelContour = makeTargetContour(text, 120);
+      drawModelContour(0);
+
+      const animate = (now) => {
+        if (token !== modelPlaybackToken || modelBoundarySupported) return;
+        const progress = Math.min(1, (now - modelPlaybackStartedAt) / (modelPlaybackDuration * 1000));
+        drawModelContour(progress);
+        if (progress < 1) modelAnimationFrame = requestAnimationFrame(animate);
+      };
+      modelAnimationFrame = requestAnimationFrame(animate);
+    }
+
+    function drawModelContour(progress) {
+      const canvas = $("waveform");
+      const bounds = canvas.getBoundingClientRect();
+      const pixelRatio = window.devicePixelRatio || 1;
+      const width = Math.max(1, Math.floor(bounds.width * pixelRatio));
+      const height = Math.max(1, Math.floor(bounds.height * pixelRatio));
+      canvas.width = width;
+      canvas.height = height;
+      const context = canvas.getContext("2d");
+      if (!context) return;
+      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      context.clearRect(0, 0, bounds.width, bounds.height);
+
+      const left = 32;
+      const right = bounds.width - 8;
+      const top = 8;
+      const bottom = bounds.height - 18;
+      const yForPitch = (pitch) => bottom - ((pitch + 8) / 16) * (bottom - top);
+      context.font = "9px sans-serif";
+      context.textAlign = "right";
+      context.textBaseline = "middle";
+      for (const value of [-6, -3, 0, 3, 6]) {
+        const y = yForPitch(value);
+        context.beginPath();
+        context.strokeStyle = value === 0 ? "#cbd2c8" : "#e8ece5";
+        context.moveTo(left, y);
+        context.lineTo(right, y);
+        context.stroke();
+        context.fillStyle = "#79847c";
+        context.fillText(`${value > 0 ? "+" : ""}${value}`, left - 6, y);
+      }
+      context.textAlign = "left";
+      context.textBaseline = "alphabetic";
+      context.fillStyle = "#79847c";
+      context.fillText("st", 3, top + 5);
+      context.fillText("0s", left, bounds.height - 3);
+      context.textAlign = "right";
+      context.fillText(`${modelPlaybackDuration.toFixed(1)}s`, right, bounds.height - 3);
+
+      const drawLine = (values, color, dashed, limit) => {
+        context.beginPath();
+        context.strokeStyle = color;
+        context.lineWidth = dashed ? 1.6 : 2.4;
+        context.setLineDash(dashed ? [5, 4] : []);
+        const lastIndex = Math.min(values.length - 1, Math.floor((values.length - 1) * limit));
+        for (let index = 0; index <= lastIndex; index++) {
+          const x = left + (index / Math.max(1, values.length - 1)) * (right - left);
+          const y = yForPitch(values[index]);
+          if (index === 0) context.moveTo(x, y);
+          else context.lineTo(x, y);
+        }
+        context.stroke();
+        context.setLineDash([]);
+      };
+      drawLine(modelContour, "#365b90", true, 1);
+      drawLine(modelContour, "#c96548", false, progress);
+
+      const cursorX = left + Math.min(1, progress) * (right - left);
+      context.beginPath();
+      context.strokeStyle = "#c96548";
+      context.lineWidth = 1;
+      context.moveTo(cursorX, top);
+      context.lineTo(cursorX, bottom);
+      context.stroke();
     }
 
     function normalize(text) {
@@ -579,9 +1142,6 @@
       }
       context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
       context.clearRect(0, 0, bounds.width, bounds.height);
-      context.beginPath();
-      context.lineWidth = 1.5;
-      context.strokeStyle = "#245c47";
       const samples = new Uint8Array(waveformAnalyser.fftSize);
       waveformAnalyser.getByteTimeDomainData(samples);
       let totalPower = 0;
@@ -589,21 +1149,316 @@
         const deviation = (sample - 128) / 128;
         totalPower += deviation * deviation;
       }
-      waveformSamples.push(Math.sqrt(totalPower / samples.length));
+      const rms = Math.sqrt(totalPower / samples.length);
+      const targetAmplitude = Math.min(1, Math.max(0.06, Math.sqrt(rms) * 4.2));
+      const smoothing = targetAmplitude > waveformAmplitude ? 0.35 : 0.12;
+      waveformAmplitude += (targetAmplitude - waveformAmplitude) * smoothing;
+      waveformSamples.push(waveformAmplitude);
+      if (waveformSamples.length > 360) waveformSamples.shift();
+
       const sampleCount = waveformSamples.length;
-      for (let x = 0; x < bounds.width; x += 1) {
-        const start = Math.floor((x / bounds.width) * sampleCount);
-        const end = Math.min(sampleCount, Math.max(start + 1, Math.floor(((x + 1) / bounds.width) * sampleCount)));
-        let maximum = 0;
-        for (let index = start; index < end; index++) {
-          maximum = Math.max(maximum, waveformSamples[index]);
+      const center = bounds.height / 2;
+      const points = waveformSamples.map((amplitude, index) => ({
+        x: sampleCount > 1 ? (index / (sampleCount - 1)) * bounds.width : bounds.width / 2,
+        amplitude: Math.min(bounds.height * 0.44, amplitude * bounds.height * 0.44)
+      }));
+      const traceEnvelope = (direction) => {
+        const first = direction > 0 ? 0 : sampleCount - 1;
+        context.moveTo(points[first].x, center + direction * points[first].amplitude);
+        for (let index = 1; index < sampleCount; index += 1) {
+          const previousIndex = direction > 0 ? index - 1 : sampleCount - index;
+          const currentIndex = direction > 0 ? index : sampleCount - 1 - index;
+          const previous = points[previousIndex];
+          const current = points[currentIndex];
+          context.quadraticCurveTo(
+            previous.x,
+            center + direction * previous.amplitude,
+            (previous.x + current.x) / 2,
+            center + direction * (previous.amplitude + current.amplitude) / 2
+          );
         }
-        const amplitude = maximum * bounds.height / 2;
-        context.moveTo(x, bounds.height / 2 - amplitude);
-        context.lineTo(x, bounds.height / 2 + amplitude);
-      }
+        const last = points[direction > 0 ? sampleCount - 1 : 0];
+        context.lineTo(last.x, center + direction * last.amplitude);
+      };
+
+      context.beginPath();
+      traceEnvelope(-1);
+      traceEnvelope(1);
+      context.closePath();
+      context.fillStyle = "rgba(36, 92, 71, 0.12)";
+      context.fill();
+      context.beginPath();
+      traceEnvelope(-1);
+      traceEnvelope(1);
+      context.lineWidth = 2.2;
+      context.lineCap = "round";
+      context.strokeStyle = "#245c47";
       context.stroke();
       waveformFrame = requestAnimationFrame(drawWaveform);
+    }
+
+    function extractPitchTrack(audioBuffer) {
+      const source = audioBuffer.getChannelData(0);
+      const stride = Math.max(1, Math.round(audioBuffer.sampleRate / 8000));
+      const sampleRate = audioBuffer.sampleRate / stride;
+      const samples = new Float32Array(Math.ceil(source.length / stride));
+      for (let index = 0; index < samples.length; index++) samples[index] = source[index * stride];
+
+      const frameSize = Math.round(sampleRate * 0.04);
+      const hopSize = Math.round(sampleRate * 0.01);
+      const minLag = Math.floor(sampleRate / 400);
+      const maxLag = Math.ceil(sampleRate / 70);
+      const track = [];
+      for (let start = 0; start + frameSize < samples.length; start += hopSize) {
+        let mean = 0;
+        for (let index = 0; index < frameSize; index++) mean += samples[start + index];
+        mean /= frameSize;
+        let power = 0;
+        for (let index = 0; index < frameSize; index++) {
+          const value = samples[start + index] - mean;
+          power += value * value;
+        }
+        if (Math.sqrt(power / frameSize) < 0.006) {
+          track.push({ time: start / sampleRate, pitch: null });
+          continue;
+        }
+
+        const correlations = new Float32Array(maxLag + 1);
+        let bestLag = 0;
+        let bestCorrelation = 0;
+        for (let lag = minLag; lag <= maxLag; lag++) {
+          let product = 0;
+          let leftPower = 0;
+          let rightPower = 0;
+          for (let index = 0; index < frameSize - lag; index++) {
+            const left = samples[start + index] - mean;
+            const right = samples[start + index + lag] - mean;
+            product += left * right;
+            leftPower += left * left;
+            rightPower += right * right;
+          }
+          const correlation = product / Math.sqrt(leftPower * rightPower || 1);
+          correlations[lag] = correlation;
+        }
+
+        for (let lag = minLag + 1; lag < maxLag; lag++) {
+          const correlation = correlations[lag];
+          if (correlation >= 0.55 && correlation >= correlations[lag - 1] && correlation > correlations[lag + 1]) {
+            bestCorrelation = correlation;
+            bestLag = lag;
+            break;
+          }
+        }
+        if (!bestLag) {
+          for (let lag = minLag; lag <= maxLag; lag++) {
+            if (correlations[lag] > bestCorrelation) {
+              bestCorrelation = correlations[lag];
+              bestLag = lag;
+            }
+          }
+        }
+
+        if (bestCorrelation < 0.32 || !bestLag) {
+          track.push({ time: start / sampleRate, pitch: null });
+          continue;
+        }
+        const before = correlations[bestLag - 1];
+        const peak = correlations[bestLag];
+        const after = correlations[bestLag + 1];
+        const curve = before - 2 * peak + after;
+        const correction = curve ? 0.5 * (before - after) / curve : 0;
+        const frequency = sampleRate / (bestLag + correction);
+        track.push({ time: start / sampleRate, pitch: frequency >= 70 && frequency <= 400 ? frequency : null });
+      }
+
+      const voiced = track.map((frame) => frame.pitch).filter(Boolean).sort((a, b) => a - b);
+      if (voiced.length < 5) return undefined;
+      interpolateShortPitchGaps(track, 4);
+      const continuousVoiced = track.map((frame) => frame.pitch).filter(Boolean).sort((a, b) => a - b);
+      const medianPitch = continuousVoiced[Math.floor(continuousVoiced.length / 2)];
+      const relative = track.map((frame) => frame.pitch
+        ? Math.max(-8, Math.min(8, 12 * Math.log2(frame.pitch / medianPitch)))
+        : null);
+      return { relative, duration: audioBuffer.duration };
+    }
+
+    function interpolateShortPitchGaps(track, maxGap) {
+      for (let start = 0; start < track.length;) {
+        if (track[start].pitch !== null) {
+          start += 1;
+          continue;
+        }
+        let end = start;
+        while (end < track.length && track[end].pitch === null) end += 1;
+        const gapLength = end - start;
+        if (start > 0 && end < track.length && gapLength <= maxGap) {
+          const before = track[start - 1].pitch;
+          const after = track[end].pitch;
+          for (let index = 0; index < gapLength; index += 1) {
+            const progress = (index + 1) / (gapLength + 1);
+            track[start + index].pitch = before + (after - before) * progress;
+          }
+        }
+        start = end;
+      }
+    }
+
+    function makeTargetContour(text, frameCount) {
+      const sentenceEnds = [...text.matchAll(/[.!?](?=\s|$)/g)];
+      const boundaries = sentenceEnds.length
+        ? sentenceEnds.map((match) => ({ end: match.index + match[0].length, punctuation: match[0].slice(-1) }))
+        : [{ end: text.length, punctuation: "." }];
+      if (boundaries[boundaries.length - 1].end < text.length) boundaries.push({ end: text.length, punctuation: "." });
+
+      const points = [];
+      let start = 0;
+      for (const boundary of boundaries) {
+        const end = boundary.end;
+        const peak = start + (end - start) * 0.65;
+        points.push(
+          { position: start / Math.max(1, text.length), pitch: 0 },
+          { position: peak / Math.max(1, text.length), pitch: 1.8 },
+          { position: end / Math.max(1, text.length), pitch: boundary.punctuation === "?" ? 3 : boundary.punctuation === "!" ? 0.5 : -2 }
+        );
+        start = end;
+      }
+      points.sort((a, b) => a.position - b.position);
+      return Array.from({ length: frameCount }, (_, index) => {
+        const position = index / Math.max(1, frameCount - 1);
+        let next = points.findIndex((point) => point.position >= position);
+        if (next < 0) return points[points.length - 1].pitch;
+        if (next === 0) return points[0].pitch;
+        const left = points[next - 1];
+        const right = points[next];
+        const span = right.position - left.position;
+        const progress = span ? (position - left.position) / span : 1;
+        return left.pitch + (right.pitch - left.pitch) * progress;
+      });
+    }
+
+    function drawPitchComparison(track, target, duration) {
+      const canvas = $("waveform");
+      const bounds = canvas.getBoundingClientRect();
+      const pixelRatio = window.devicePixelRatio || 1;
+      const width = Math.max(1, Math.floor(bounds.width * pixelRatio));
+      const height = Math.max(1, Math.floor(bounds.height * pixelRatio));
+      canvas.width = width;
+      canvas.height = height;
+      const context = canvas.getContext("2d");
+      if (!context) throw new Error("Canvas drawing is unavailable.");
+      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      context.clearRect(0, 0, bounds.width, bounds.height);
+
+      const left = 32;
+      const right = bounds.width - 8;
+      const top = 8;
+      const bottom = bounds.height - 18;
+      const voicedRange = track.filter(Number.isFinite).map(Math.abs).sort((a, b) => a - b);
+      const percentileIndex = Math.floor((voicedRange.length - 1) * 0.95);
+      const pitchRange = Math.max(2, Math.min(8, voicedRange[percentileIndex] * 1.2));
+      const yForPitch = (pitch) => bottom - ((pitch + pitchRange) / (pitchRange * 2)) * (bottom - top);
+      context.font = "9px sans-serif";
+      context.textAlign = "right";
+      context.textBaseline = "middle";
+      for (const value of [-pitchRange, -pitchRange / 2, 0, pitchRange / 2, pitchRange]) {
+        const y = yForPitch(value);
+        context.beginPath();
+        context.strokeStyle = value === 0 ? "#cbd2c8" : "#e8ece5";
+        context.lineWidth = 1;
+        context.moveTo(left, y);
+        context.lineTo(right, y);
+        context.stroke();
+        context.fillStyle = "#79847c";
+        const label = Number(value.toFixed(1));
+        context.fillText(`${label > 0 ? "+" : ""}${label}`, left - 6, y);
+      }
+      context.textAlign = "left";
+      context.textBaseline = "alphabetic";
+      context.fillStyle = "#79847c";
+      context.fillText("st", 3, top + 5);
+      context.fillText("0s", left, bounds.height - 3);
+      context.textAlign = "right";
+      context.fillText(`${duration.toFixed(1)}s`, right, bounds.height - 3);
+
+      const drawTrack = (values, color, dashed) => {
+        context.beginPath();
+        context.strokeStyle = color;
+        context.lineWidth = dashed ? 1.8 : 2.8;
+        context.lineCap = "round";
+        context.lineJoin = "round";
+        context.setLineDash(dashed ? [5, 4] : []);
+        let segment = [];
+        const strokeSegment = () => {
+          if (!segment.length) return;
+          const first = segment[0];
+          context.moveTo(first.x, first.y);
+          for (let index = 1; index < segment.length; index += 1) {
+            const previous = segment[index - 1];
+            const current = segment[index];
+            context.quadraticCurveTo(
+              previous.x,
+              previous.y,
+              (previous.x + current.x) / 2,
+              (previous.y + current.y) / 2
+            );
+          }
+          const last = segment[segment.length - 1];
+          context.lineTo(last.x, last.y);
+          segment = [];
+        };
+        values.forEach((value, index) => {
+          if (value === null || !Number.isFinite(value)) {
+            strokeSegment();
+            return;
+          }
+          const x = left + (index / Math.max(1, values.length - 1)) * (right - left);
+          const boundedPitch = Math.max(-pitchRange, Math.min(pitchRange, value));
+          segment.push({ x, y: yForPitch(boundedPitch) });
+        });
+        strokeSegment();
+        context.stroke();
+        context.setLineDash([]);
+      };
+      drawTrack(target, "#365b90", true);
+      drawTrack(track, "#c96548", false);
+      $("wave-title").textContent = "Pitch contour comparison";
+      $("wave-description").textContent = `Pitch movement · ±${pitchRange.toFixed(1)} st auto-scaled`;
+      $("wave-legend").replaceChildren();
+      const userKey = document.createElement("span");
+      userKey.className = "wave-key user";
+      userKey.textContent = "Your pitch";
+      const guideKey = document.createElement("span");
+      guideKey.className = "wave-key guide";
+      guideKey.textContent = "Target intonation guide";
+      $("wave-legend").append(userKey, guideKey);
+      $("wave-legend").hidden = false;
+      $("pitch-note").textContent = "Your voice is measured in short overlapping frames to show fine pitch movement across the phrase. The vertical semitone scale auto-adjusts to make changes easier to see; the dashed line is a text-based intonation guide, not a measured model voice.";
+      $("pitch-note").hidden = false;
+      canvas.setAttribute("aria-label", "Your recorded pitch contour compared with a suggested intonation guide on the same semitone scale");
+    }
+
+    function showPitchUnavailable(message) {
+      $("wave-title").textContent = "Pitch contour unavailable";
+      $("wave-description").textContent = "Your recording is still available to replay";
+      $("wave-legend").hidden = true;
+      $("pitch-note").textContent = message;
+      $("pitch-note").hidden = false;
+      const canvas = $("waveform");
+      const context = canvas.getContext("2d");
+      if (context) context.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    async function analyzeRecording(blob) {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) throw new Error("Pitch analysis is not supported in this browser.");
+      waveformContext ||= new AudioContextClass();
+      const audioBuffer = await waveformContext.decodeAudioData(await blob.arrayBuffer());
+      const analysis = extractPitchTrack(audioBuffer);
+      if (!analysis) {
+        showPitchUnavailable("There was not enough clear voiced speech to estimate a pitch contour. Try a longer recording and speak clearly.");
+        return;
+      }
+      drawPitchComparison(analysis.relative, makeTargetContour(currentPhrase().text, analysis.relative.length), analysis.duration);
     }
 
     async function startWaveform(stream) {
@@ -618,17 +1473,35 @@
         if (!recording) return;
         waveformAnalyser = waveformContext.createAnalyser();
         waveformAnalyser.fftSize = 1024;
+        waveformSink = waveformContext.createGain();
+        waveformSink.gain.value = 0;
         waveformSource = waveformContext.createMediaStreamSource(stream);
         waveformSource.connect(waveformAnalyser);
+        waveformAnalyser.connect(waveformSink);
+        waveformSink.connect(waveformContext.destination);
         $("wave-wrap").hidden = false;
         drawWaveform();
       } catch (error) {
+        waveformSource?.disconnect();
+        waveformAnalyser?.disconnect();
+        waveformSink?.disconnect();
+        waveformSource = undefined;
         waveformAnalyser = undefined;
+        waveformSink = undefined;
         showToast(`Could not start waveform display: ${error.message}`);
       }
     }
 
     function showView(name) {
+      if (name !== "rhythm") {
+        if (metronomeMode === "lead" || rhythmLeadPending) stopRhythmLead();
+        else if (metronomeMode) stopMetronome();
+      }
+      if (name !== "practice" && window.speechSynthesis?.speaking) {
+        window.speechSynthesis.cancel();
+        stopModelVisualization();
+        $("listen-button").lastChild.textContent = "Play model";
+      }
       document.querySelectorAll(".view").forEach((view) => { view.hidden = view.id !== `view-${name}`; });
       document.querySelectorAll(".nav-button").forEach((button) => {
         const active = button.dataset.view === name;
@@ -639,7 +1512,7 @@
     }
 
     function renderCorpus() {
-      const categories = ["All", ...new Set(phrases.map((item) => item.category))];
+      const categories = ["All", ...new Set([...phrases, ...passages].map((item) => item.category))];
       $("corpus-filters").replaceChildren(...categories.map((category) => {
         const button = document.createElement("button");
         button.type = "button";
@@ -662,17 +1535,52 @@
         category.className = "card-category";
         category.textContent = item.category;
         const title = document.createElement("strong");
-        title.textContent = item.text;
+        title.append(renderAnnotatedText(item.segments));
         const meta = document.createElement("span");
         meta.className = "card-meta";
         meta.textContent = `${item.tag} · Shadowing practice`;
         card.append(category, title, meta);
         card.addEventListener("click", () => {
+          selectedPracticeItem = undefined;
           order = [index, ...phrases.map((_, phraseNumber) => phraseNumber).filter((phraseNumber) => phraseNumber !== index)];
           phraseIndex = 0;
           showPhrase();
           showView("practice");
         });
+        return card;
+      }));
+      const matchingPassages = passages.filter((item) => corpusCategory === "All" || item.category === corpusCategory);
+      $("passage-list").replaceChildren(...matchingPassages.map((passage) => {
+        const card = document.createElement("article");
+        card.className = "passage-card";
+        const header = document.createElement("div");
+        header.className = "passage-card-head";
+        const heading = document.createElement("div");
+        const category = document.createElement("span");
+        category.className = "card-category";
+        category.textContent = `${passage.category} · ${passage.tag}`;
+        const title = document.createElement("h4");
+        title.textContent = passage.title;
+        heading.append(category, title);
+        header.append(heading);
+        const paragraph = document.createElement("p");
+        paragraph.append(renderAnnotatedText(passage.segments));
+        const footer = document.createElement("div");
+        footer.className = "passage-card-footer";
+        const wordCount = passageText(passage.segments).trim().split(/\s+/).length;
+        const meta = document.createElement("span");
+        meta.textContent = `${wordCount} words · Inline speaking cues`;
+        const practiceButton = document.createElement("button");
+        practiceButton.type = "button";
+        practiceButton.className = "passage-practice";
+        practiceButton.textContent = "Shadow this passage";
+        practiceButton.addEventListener("click", () => {
+          selectedPracticeItem = { ...passage, text: passageText(passage.segments) };
+          showPhrase();
+          showView("practice");
+        });
+        footer.append(meta, practiceButton);
+        card.append(header, paragraph, footer);
         return card;
       }));
     }
@@ -702,22 +1610,171 @@
       try {
         metronomeContext ||= new AudioContextClass();
         await metronomeContext.resume();
-        window.clearInterval(metronomeTimer);
-        metronomeBeat = 0;
-        playMetronomeBeat();
-        const interval = 60000 / Number($("tempo-slider").value);
-        metronomeTimer = window.setInterval(playMetronomeBeat, interval);
-        $("metronome-toggle").textContent = "Stop metronome";
+        startBeatLoop("metronome");
       } catch (error) {
         showToast(`Could not start metronome: ${error.message}`);
       }
     }
 
-    function stopMetronome() {
+    function stopMetronome(cancelVoice = true) {
+      const wasLeading = metronomeMode === "lead";
       window.clearInterval(metronomeTimer);
       metronomeTimer = undefined;
+      metronomeMode = undefined;
       document.querySelectorAll(".beat-dot").forEach((dot) => dot.classList.remove("active"));
       $("metronome-toggle").textContent = "Start metronome";
+      $("metronome-toggle").disabled = false;
+      $("tempo-slider").disabled = false;
+      $("rhythm-lead").textContent = "Play lead with beat";
+      if (wasLeading && cancelVoice) window.speechSynthesis?.cancel();
+    }
+
+    function startBeatLoop(mode) {
+      window.clearInterval(metronomeTimer);
+      metronomeMode = mode;
+      metronomeBeat = 0;
+      playMetronomeBeat();
+      const interval = 60000 / Number($("tempo-slider").value);
+      metronomeTimer = window.setInterval(playMetronomeBeat, interval);
+      $("metronome-toggle").textContent = mode === "lead" ? "Following lead" : "Stop metronome";
+      $("metronome-toggle").disabled = mode === "lead";
+      $("tempo-slider").disabled = mode === "lead";
+      $("rhythm-lead").textContent = mode === "lead" ? "Stop lead reading" : "Play lead with beat";
+    }
+
+    function renderRhythmLibrary() {
+      $("rhythm-scenarios").replaceChildren(...rhythmTracks.map((track, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `rhythm-scene-button${index === rhythmTrackIndex ? " active" : ""}`;
+        button.textContent = track.category;
+        button.setAttribute("aria-pressed", String(index === rhythmTrackIndex));
+        button.addEventListener("click", () => {
+          stopRhythmLead();
+          rhythmTrackIndex = index;
+          rhythmPhraseIndex = 0;
+          renderRhythmLibrary();
+        });
+        return button;
+      }));
+
+      const track = rhythmTracks[rhythmTrackIndex];
+      $("rhythm-track-label").textContent = track.title;
+      $("rhythm-steps").replaceChildren(...track.phrases.map((phrase, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `step-button${index === rhythmPhraseIndex ? " active" : ""}`;
+        button.setAttribute("aria-pressed", String(index === rhythmPhraseIndex));
+        const number = document.createElement("span");
+        number.textContent = String(index + 1).padStart(2, "0");
+        const sentence = document.createElement("strong");
+        sentence.textContent = phrase;
+        button.append(number, sentence);
+        button.addEventListener("click", () => {
+          stopRhythmLead();
+          rhythmPhraseIndex = index;
+          renderRhythmLibrary();
+        });
+        return button;
+      }));
+
+      $("build-sentence").textContent = track.phrases[rhythmPhraseIndex];
+      $("rhythm-progress").textContent = `Phrase ${rhythmPhraseIndex + 1} of ${track.phrases.length} · ${track.category}`;
+      $("rhythm-previous").disabled = rhythmTrackIndex === 0 && rhythmPhraseIndex === 0;
+      $("rhythm-next").disabled = rhythmTrackIndex === rhythmTracks.length - 1 && rhythmPhraseIndex === track.phrases.length - 1;
+    }
+
+    function moveRhythmPhrase(direction) {
+      stopRhythmLead();
+      let nextIndex = rhythmTrackIndex * 4 + rhythmPhraseIndex + direction;
+      nextIndex = Math.max(0, Math.min(rhythmTracks.length * 4 - 1, nextIndex));
+      rhythmTrackIndex = Math.floor(nextIndex / 4);
+      rhythmPhraseIndex = nextIndex % 4;
+      renderRhythmLibrary();
+    }
+
+    function rhythmLeadRate(text, tempo) {
+      const wordCount = text.trim().split(/\s+/).length;
+      const beatCount = Math.max(1, Math.ceil(wordCount / 2));
+      const targetDuration = beatCount * 60 / tempo;
+      const typicalDuration = wordCount / 2.5;
+      return Math.max(0.55, Math.min(2, typicalDuration / targetDuration));
+    }
+
+    async function playRhythmLead() {
+      if (metronomeMode === "lead" || rhythmLeadPending) {
+        stopRhythmLead();
+        return;
+      }
+      if (!("speechSynthesis" in window)) {
+        showToast("Speech playback is not supported in this browser.");
+        return;
+      }
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) {
+        showToast("Metronome audio is not supported in this browser.");
+        return;
+      }
+      stopMetronome();
+      stopModelVisualization();
+      $("listen-button").lastChild.textContent = "Play model";
+      const token = ++rhythmLeadToken;
+      rhythmLeadPending = true;
+      $("rhythm-lead").textContent = "Stop lead reading";
+      $("metronome-toggle").textContent = "Waiting for voice";
+      $("metronome-toggle").disabled = true;
+      $("tempo-slider").disabled = true;
+      try {
+        metronomeContext ||= new AudioContextClass();
+        await metronomeContext.resume();
+        if (token !== rhythmLeadToken) return;
+        const text = rhythmTracks[rhythmTrackIndex].phrases[rhythmPhraseIndex];
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "en-GB";
+        const tempo = Number($("tempo-slider").value);
+        utterance.rate = rhythmLeadRate(text, tempo);
+        const britishVoice = window.speechSynthesis.getVoices().find((voice) => voice.lang === "en-GB");
+        if (britishVoice) utterance.voice = britishVoice;
+        utterance.onstart = () => {
+          if (token !== rhythmLeadToken) return;
+          rhythmLeadPending = false;
+          startBeatLoop("lead");
+        };
+        utterance.onend = () => {
+          if (token !== rhythmLeadToken) return;
+          rhythmLeadPending = false;
+          if (metronomeMode === "lead") stopMetronome(false);
+        };
+        utterance.onerror = () => {
+          if (token !== rhythmLeadToken) return;
+          rhythmLeadPending = false;
+          stopMetronome(false);
+          $("rhythm-lead").textContent = "Play lead with beat";
+          showToast("The spoken rhythm model could not be completed.");
+        };
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utterance);
+      } catch (error) {
+        if (token === rhythmLeadToken) {
+          rhythmLeadPending = false;
+          stopMetronome(false);
+          $("rhythm-lead").textContent = "Play lead with beat";
+        }
+        showToast(`Could not start the spoken rhythm model: ${error.message}`);
+      }
+    }
+
+    function stopRhythmLead() {
+      if (!rhythmLeadPending && metronomeMode !== "lead") return;
+      rhythmLeadToken += 1;
+      rhythmLeadPending = false;
+      if (metronomeMode === "lead") stopMetronome();
+      else {
+        window.speechSynthesis?.cancel();
+        $("rhythm-lead").textContent = "Play lead with beat";
+        $("metronome-toggle").disabled = false;
+        $("tempo-slider").disabled = false;
+      }
     }
 
     function renderQuiz() {
@@ -795,6 +1852,13 @@
     }
 
     async function startRecording() {
+      if (finalizingRecording) {
+        showToast("Wait for the pitch comparison to finish before recording again.");
+        return;
+      }
+      stopModelVisualization();
+      window.speechSynthesis?.cancel();
+      $("listen-button").lastChild.textContent = "Play model";
       if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
         showToast("Audio recording is not supported in this browser.");
         return;
@@ -803,6 +1867,12 @@
         mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
         chunks = [];
         waveformSamples = [];
+        waveformAmplitude = 0;
+        $("wave-title").textContent = "Live microphone signal";
+        $("wave-description").textContent = "Amplitude · live input";
+        $("wave-legend").hidden = true;
+        $("pitch-note").hidden = true;
+        $("waveform").setAttribute("aria-label", "Live microphone amplitude waveform");
         mediaDone = false;
         recognitionDone = !Recognition;
         finalized = false;
@@ -815,6 +1885,9 @@
         mediaRecorder.start();
         startWaveform(mediaStream);
         recording = true;
+        finalizingRecording = false;
+        $("replay-row").hidden = true;
+        $("recording-player").pause();
         $("next-button").disabled = true;
         $("record-button").classList.add("recording");
         $("record-button").setAttribute("aria-label", "Stop recording");
@@ -836,13 +1909,18 @@
     function stopRecording() {
       if (!recording) return;
       recording = false;
+      finalizingRecording = true;
+      $("record-button").disabled = true;
       cancelAnimationFrame(waveformFrame);
       waveformSource?.disconnect();
+      waveformAnalyser?.disconnect();
+      waveformSink?.disconnect();
       waveformSource = undefined;
       waveformAnalyser = undefined;
+      waveformSink = undefined;
       $("record-button").classList.remove("recording");
       $("record-button").setAttribute("aria-label", "Start recording");
-      $("next-button").disabled = false;
+      $("next-button").disabled = true;
       $("record-label").textContent = "Record again";
       $("record-icon").innerHTML = '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>';
       $("record-hint").textContent = "Review your words, then try the next phrase.";
@@ -852,14 +1930,25 @@
       }
     }
 
-    function finishRecording() {
+    async function finishRecording() {
       finalized = true;
       mediaStream?.getTracks().forEach((track) => track.stop());
       const blob = new Blob(chunks, { type: mediaRecorder.mimeType || "audio/webm" });
       const player = $("recording-player");
       recordingUrl = URL.createObjectURL(blob);
       player.src = recordingUrl;
-      player.hidden = false;
+      $("replay-row").hidden = false;
+      $("wave-wrap").hidden = false;
+      $("status").textContent = "Recording ready. Comparing your pitch movement with the intonation guide...";
+      try {
+        await analyzeRecording(blob);
+      } catch (error) {
+        showPitchUnavailable("Pitch analysis could not be completed, but you can still replay your recording.");
+        showToast(`Could not analyze the recording pitch: ${error.message}`);
+      }
+      finalizingRecording = false;
+      $("next-button").disabled = false;
+      $("record-button").disabled = false;
       practiced += 1;
       $("practiced-count").textContent = practiced;
       const goalCount = Math.min(practiced, 10);
@@ -890,12 +1979,27 @@
       }
     }
 
+    function toggleRecordingPlayback() {
+      const player = $("recording-player");
+      if (player.paused) {
+        player.play().catch((error) => showToast(`Could not play the recording: ${error.message}`));
+      } else {
+        player.pause();
+      }
+    }
+
     function nextPhrase() {
-      if (recording) {
-        showToast("Stop your recording before continuing.");
+      if (recording || finalizingRecording) {
+        showToast(finalizingRecording ? "Wait for the recording analysis to finish before continuing." : "Stop your recording before continuing.");
         return;
       }
       window.speechSynthesis?.cancel();
+      if (selectedPracticeItem) {
+        selectedPracticeItem = undefined;
+        shuffleOrder();
+        showPhrase();
+        return;
+      }
       phraseIndex += 1;
       if (phraseIndex >= order.length) shuffleOrder();
       showPhrase();
@@ -903,10 +2007,23 @@
 
     $("listen-button").addEventListener("click", speakModel);
     $("record-button").addEventListener("click", () => recording ? stopRecording() : startRecording());
+    $("replay-button").addEventListener("click", toggleRecordingPlayback);
+    $("recording-player").addEventListener("play", () => {
+      $("replay-label").textContent = "Pause my recording";
+      $("replay-button").setAttribute("aria-label", "Pause your recording");
+    });
+    $("recording-player").addEventListener("pause", () => {
+      $("replay-label").textContent = "Play my recording";
+      $("replay-button").setAttribute("aria-label", "Play your recording");
+    });
+    $("recording-player").addEventListener("ended", () => {
+      $("replay-label").textContent = "Play my recording";
+      $("replay-button").setAttribute("aria-label", "Play your recording");
+    });
     $("next-button").addEventListener("click", nextPhrase);
     document.querySelectorAll(".nav-button").forEach((button) => button.addEventListener("click", () => {
-      if (recording && button.dataset.view !== "practice") {
-        showToast("Stop your recording before leaving practice.");
+      if ((recording || finalizingRecording) && button.dataset.view !== "practice") {
+        showToast("Wait for your recording to finish before leaving practice.");
         return;
       }
       showView(button.dataset.view);
@@ -915,25 +2032,24 @@
       const tempo = Number(event.currentTarget.value);
       $("tempo-value").textContent = tempo;
       $("tempo-output").textContent = `${tempo} BPM`;
-      if (metronomeTimer) startMetronome();
+      if (metronomeMode === "metronome") startBeatLoop("metronome");
     });
-    $("metronome-toggle").addEventListener("click", () => metronomeTimer ? stopMetronome() : startMetronome());
+    $("metronome-toggle").addEventListener("click", () => metronomeMode ? stopMetronome() : startMetronome());
     $("metronome-reset").addEventListener("click", () => {
+      stopRhythmLead();
       stopMetronome();
       $("tempo-slider").value = 72;
       $("tempo-value").textContent = "72";
       $("tempo-output").textContent = "72 BPM";
     });
-    $("rhythm-steps").addEventListener("click", (event) => {
-      const button = event.target.closest("[data-step]");
-      if (!button) return;
-      document.querySelectorAll(".step-button").forEach((step) => step.classList.toggle("active", step === button));
-      $("build-sentence").textContent = button.querySelector("strong").textContent;
-    });
+    $("rhythm-previous").addEventListener("click", () => moveRhythmPhrase(-1));
+    $("rhythm-next").addEventListener("click", () => moveRhythmPhrase(1));
+    $("rhythm-lead").addEventListener("click", playRhythmLead);
     renderCorpus();
     renderQuiz();
     shuffleOrder();
     showPhrase();
+    renderRhythmLibrary();
     if (!recognitionAvailable) $("record-hint").textContent = "Record and replay your voice; speech recognition is not supported here.";
   </script>
 </body>
