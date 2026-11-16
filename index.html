@@ -1,0 +1,940 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f5ef">
+  <title>VocalFlow | Business English practice</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #f3f5ef;
+      --ink: #17251f;
+      --muted: #6d7871;
+      --line: #dce2d9;
+      --green: #245c47;
+      --green-dark: #193f32;
+      --lime: #d8f16b;
+      --coral: #e78366;
+      --white: #fffefa;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: "Avenir Next", Avenir, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 93% 5%, rgba(216, 241, 107, .25), transparent 28rem),
+        repeating-linear-gradient(0deg, transparent, transparent 47px, rgba(35, 73, 55, .035) 48px),
+        var(--paper);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button { font: inherit; }
+    button:focus-visible { outline: 3px solid var(--coral); outline-offset: 3px; }
+    .shell { max-width: 1160px; margin: 0 auto; padding: 0 42px; }
+    .topbar { min-height: 82px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--line); }
+    .brand { display: flex; align-items: center; gap: 11px; flex: 0 0 auto; font-size: 19px; font-weight: 720; letter-spacing: -.5px; }
+    .brand-mark { width: 31px; height: 31px; display: grid; place-items: center; border-radius: 50%; background: var(--green); color: var(--lime); font-family: var(--serif); font-size: 20px; }
+    .brand-name { letter-spacing: -.8px; }
+    .brand-name span { color: var(--green); font-weight: 450; }
+    .main-nav { display: flex; align-items: center; align-self: stretch; gap: 4px; }
+    .nav-button { position: relative; padding: 0 12px; border: 0; color: var(--muted); background: transparent; font-size: 11px; cursor: pointer; }
+    .nav-button::after { position: absolute; right: 12px; bottom: -1px; left: 12px; height: 2px; background: transparent; content: ""; }
+    .nav-button:hover, .nav-button.active { color: var(--green); }
+    .nav-button.active { font-weight: 700; }
+    .nav-button.active::after { background: var(--green); }
+    .top-meta { display: flex; align-items: center; gap: 22px; color: var(--muted); font-size: 12px; }
+    .locale { border: 1px solid var(--line); padding: 8px 11px; border-radius: 3px; color: var(--ink); background: rgba(255,255,255,.38); }
+    .online-dot { display: inline-block; width: 7px; height: 7px; margin-right: 7px; border-radius: 50%; background: #75a959; }
+
+    main { padding: 44px 0 64px; }
+    .intro { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 30px; }
+    .eyebrow { margin: 0 0 11px; color: var(--green); font-size: 10px; font-weight: 750; letter-spacing: 1.65px; text-transform: uppercase; }
+    h1 { margin: 0; font-family: var(--serif); font-weight: 400; font-size: clamp(36px, 5vw, 54px); letter-spacing: 0; line-height: 1.06; }
+    .intro-note { max-width: 225px; padding: 0 0 4px 15px; border-left: 2px solid var(--lime); color: var(--muted); font-size: 12px; line-height: 1.65; }
+    .view[hidden] { display: none; }
+    .skill-strip { display: grid; grid-template-columns: repeat(5, 1fr); margin: 0 0 18px; border: 1px solid var(--line); background: rgba(255,255,255,.42); }
+    .skill-item { padding: 12px 14px; border-right: 1px solid var(--line); }
+    .skill-item:last-child { border-right: 0; }
+    .skill-item strong { display: block; color: var(--green); font-family: var(--serif); font-size: 15px; font-weight: 400; }
+    .skill-item span { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; }
+
+    .workspace { display: grid; grid-template-columns: minmax(0, 1fr) 286px; gap: 20px; align-items: stretch; }
+    .practice { min-height: 490px; padding: 29px 34px 27px; background: var(--white); border: 1px solid #e8ebe4; box-shadow: 0 12px 35px rgba(34, 57, 43, .045); }
+    .practice-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .session-label { display: flex; align-items: center; gap: 9px; color: var(--muted); font-size: 11px; }
+    .session-label strong { color: var(--ink); font-size: 12px; font-weight: 650; }
+    .counter { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 11px; }
+    .progress { height: 3px; margin-top: 16px; background: #edf0e9; }
+    .progress > span { display: block; width: 8%; height: 100%; background: var(--green); transition: width .35s ease; }
+    .phrase-area { min-height: 213px; display: flex; flex-direction: column; justify-content: center; padding: 22px 2px 17px; }
+    .phrase-tag { align-self: flex-start; margin-bottom: 16px; padding: 6px 9px; color: var(--green); background: #edf3e6; font-size: 9px; font-weight: 750; letter-spacing: 1.1px; text-transform: uppercase; }
+    .phrase { max-width: 680px; margin: 0; font-family: var(--serif); font-size: clamp(28px, 4vw, 42px); font-weight: 400; line-height: 1.27; }
+    .phrase-hint { margin: 14px 0 0; color: var(--muted); font-size: 12px; }
+    .speech-cues { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .cue { padding: 5px 8px; border: 1px solid #e4e9df; color: #536158; background: #fafbf7; font-size: 9px; line-height: 1.4; }
+    .cue strong { color: var(--green); font-weight: 700; }
+    .divider { height: 1px; background: var(--line); }
+    .listen-row { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 18px 0; }
+    .listen-copy { display: flex; flex-direction: column; gap: 4px; }
+    .listen-copy strong { font-size: 12px; font-weight: 650; }
+    .listen-copy span { color: var(--muted); font-size: 10px; }
+    .listen-button, .icon-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--line); border-radius: 3px; color: var(--ink); background: transparent; cursor: pointer; }
+    .listen-button { min-height: 38px; padding: 0 13px; font-size: 11px; }
+    .listen-button:hover, .icon-button:hover { background: #f1f4ec; }
+    .listen-button svg, .icon-button svg { width: 15px; height: 15px; }
+
+    .record-area { padding: 20px 0 17px; }
+    .record-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .record-copy strong { display: block; margin-bottom: 5px; font-size: 12px; font-weight: 650; }
+    .record-copy span { color: var(--muted); font-size: 10px; }
+    .record-actions { display: flex; align-items: center; gap: 10px; }
+    .record-button { min-width: 143px; height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 9px; border: 0; border-radius: 3px; background: var(--green); color: white; font-size: 12px; font-weight: 650; cursor: pointer; transition: background .2s, transform .2s; }
+    .record-button:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .record-button.recording { background: #a94839; }
+    .record-button svg { width: 16px; height: 16px; }
+    .next-button { width: 40px; height: 40px; }
+    .next-button:disabled { opacity: .45; cursor: not-allowed; }
+    .feedback { display: none; margin-top: 16px; padding: 15px 16px; border-left: 3px solid var(--lime); background: #f4f6ed; animation: appear .3s ease both; }
+    .feedback.visible { display: block; }
+    .feedback-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+    .feedback-title { margin: 0; font-size: 11px; font-weight: 700; }
+    .score { color: var(--green); font-family: var(--serif); font-size: 25px; }
+    .heard { margin: 7px 0 0; color: #536158; font-size: 11px; line-height: 1.55; }
+    .feedback-note { margin: 6px 0 0; color: var(--muted); font-size: 9px; line-height: 1.55; }
+    .recording-player { width: 100%; height: 32px; margin-top: 8px; }
+    .wave-wrap { margin-top: 14px; padding: 11px 12px 8px; border: 1px solid var(--line); background: #fbfcf8; }
+    .wave-head { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 9px; }
+    .wave-head strong { color: var(--green); font-weight: 650; }
+    .waveform { display: block; width: 100%; height: 54px; margin-top: 6px; }
+    .status { min-height: 18px; margin: 11px 0 0; color: var(--muted); font-size: 10px; }
+
+    .side { display: flex; flex-direction: column; gap: 14px; }
+    .side-panel { padding: 20px; border: 1px solid var(--line); background: rgba(255,255,255,.46); }
+    .side-panel h2 { margin: 0 0 17px; font-size: 10px; font-weight: 750; letter-spacing: 1.3px; text-transform: uppercase; }
+    .goal { display: flex; align-items: center; gap: 15px; }
+    .goal-ring { width: 62px; height: 62px; display: grid; flex: 0 0 auto; place-items: center; border: 1px solid #dfe6d6; border-radius: 50%; background: conic-gradient(var(--green) 0deg, var(--green) 108deg, #e6eadf 108deg); position: relative; }
+    .goal-ring::before { content: ""; position: absolute; inset: 5px; border-radius: inherit; background: var(--paper); }
+    .goal-ring span { position: relative; font-family: var(--serif); font-size: 20px; }
+    .goal-copy strong { display: block; font-size: 12px; }
+    .goal-copy span { display: block; margin-top: 5px; color: var(--muted); font-size: 10px; line-height: 1.5; }
+    .stat-list { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding-top: 17px; margin-top: 17px; border-top: 1px solid var(--line); }
+    .stat-label { display: block; color: var(--muted); font-size: 9px; }
+    .stat-value { display: block; margin-top: 5px; font-family: var(--serif); font-size: 23px; }
+    .tip-panel { flex: 1; background: var(--green); color: white; border-color: var(--green); position: relative; overflow: hidden; }
+    .tip-panel::after { content: "“"; position: absolute; right: 12px; bottom: -31px; color: rgba(216,241,107,.18); font-family: var(--serif); font-size: 125px; line-height: 1; }
+    .tip-panel h2 { color: var(--lime); }
+    .tip-panel p { position: relative; z-index: 1; max-width: 210px; margin: 0; color: rgba(255,255,255,.88); font-family: var(--serif); font-size: 18px; line-height: 1.45; }
+    .tip-panel span { position: relative; z-index: 1; display: block; margin-top: 13px; color: rgba(255,255,255,.58); font-size: 9px; }
+    .footnote { margin: 18px 0 0; color: #7d877f; font-size: 9px; line-height: 1.6; }
+    .toast { position: fixed; left: 50%; bottom: 24px; z-index: 5; max-width: calc(100vw - 32px); padding: 11px 15px; border: 1px solid #435d4b; border-radius: 3px; color: white; background: #203d2e; font-size: 11px; transform: translate(-50%, 14px); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
+    .toast.show { transform: translate(-50%, 0); opacity: 1; }
+    .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 20px; }
+    .section-heading h2 { margin: 0; font-family: var(--serif); font-size: 30px; font-weight: 400; }
+    .section-heading p { max-width: 420px; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    .filter-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+    .filter-button { padding: 8px 12px; border: 1px solid var(--line); border-radius: 2px; color: var(--muted); background: rgba(255,255,255,.45); font-size: 10px; cursor: pointer; }
+    .filter-button:hover, .filter-button.active { border-color: var(--green); color: var(--green); background: #edf3e6; }
+    .corpus-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .corpus-card { min-height: 156px; display: flex; flex-direction: column; align-items: flex-start; padding: 17px; border: 1px solid var(--line); text-align: left; background: var(--white); cursor: pointer; transition: transform .18s, border-color .18s; }
+    .corpus-card:hover { transform: translateY(-2px); border-color: #9baa94; }
+    .corpus-card .card-category { color: var(--green); font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+    .corpus-card strong { margin-top: 12px; font-family: var(--serif); font-size: 18px; font-weight: 400; line-height: 1.35; }
+    .corpus-card .card-meta { margin-top: auto; padding-top: 12px; color: var(--muted); font-size: 9px; }
+    .studio-grid { display: grid; grid-template-columns: minmax(0, 1fr) 286px; gap: 18px; }
+    .studio-panel, .knowledge-card { padding: 24px; border: 1px solid var(--line); background: var(--white); }
+    .studio-panel h3, .knowledge-card h3 { margin: 0; font-size: 13px; font-weight: 700; }
+    .studio-panel > p, .knowledge-card > p { color: var(--muted); font-size: 11px; line-height: 1.65; }
+    .tempo-display { display: flex; align-items: center; gap: 16px; margin: 22px 0; }
+    .tempo-number { min-width: 84px; font-family: var(--serif); font-size: 52px; line-height: 1; }
+    .tempo-number small { display: block; margin-top: 6px; color: var(--muted); font-family: var(--sans); font-size: 9px; }
+    .beat-dots { display: flex; gap: 9px; }
+    .beat-dot { width: 12px; height: 12px; border-radius: 50%; background: #e4e9df; }
+    .beat-dot.active { background: var(--coral); transform: scale(1.25); }
+    .tempo-controls { display: flex; align-items: center; gap: 10px; }
+    .tempo-controls input { flex: 1; accent-color: var(--green); }
+    .tempo-controls output { min-width: 54px; color: var(--muted); font-size: 10px; text-align: right; }
+    .metronome-actions { display: flex; gap: 8px; margin-top: 15px; }
+    .primary-small, .secondary-small { min-height: 37px; padding: 0 14px; border: 1px solid var(--green); color: white; background: var(--green); font-size: 10px; cursor: pointer; }
+    .secondary-small { color: var(--green); background: transparent; }
+    .step-list { display: grid; gap: 8px; margin-top: 14px; }
+    .step-button { display: flex; align-items: center; gap: 11px; padding: 12px; border: 1px solid var(--line); color: var(--ink); text-align: left; background: #fbfcf8; cursor: pointer; }
+    .step-button.active { border-color: var(--green); background: #edf3e6; }
+    .step-button span { color: var(--green); font-family: var(--serif); font-size: 16px; }
+    .step-button strong { font-size: 10px; font-weight: 600; }
+    .build-sentence { min-height: 68px; margin-top: 14px; padding: 14px; border-left: 2px solid var(--lime); color: var(--green-dark); background: #f5f7ef; font-family: var(--serif); font-size: 19px; line-height: 1.5; }
+    .knowledge-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .knowledge-card { min-height: 173px; }
+    .rule-label { display: inline-block; margin-bottom: 12px; color: var(--green); font-size: 9px; font-weight: 750; letter-spacing: 1px; text-transform: uppercase; }
+    .rule-example { padding: 10px 12px; color: var(--green-dark); background: #f2f5eb; font-family: var(--serif); font-size: 16px; }
+    .rule-example small { display: block; margin-top: 5px; color: var(--muted); font-family: var(--sans); font-size: 9px; }
+    .quiz-options { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 13px; }
+    .quiz-option { padding: 8px 11px; border: 1px solid var(--line); color: var(--ink); background: transparent; font-size: 10px; cursor: pointer; }
+    .quiz-option:hover { border-color: var(--green); color: var(--green); }
+    .quiz-result { min-height: 18px; margin: 10px 0 0; color: var(--muted); font-size: 10px; }
+    @keyframes appear { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 760px) {
+      .shell { padding: 0 22px; }
+      .topbar { min-height: 68px; flex-wrap: wrap; }
+      .main-nav { order: 3; width: 100%; height: 45px; justify-content: space-between; }
+      .nav-button { padding: 0 7px; font-size: 10px; }
+      .nav-button::after { right: 7px; left: 7px; }
+      main { padding-top: 32px; }
+      .workspace { grid-template-columns: 1fr; }
+      .practice { min-height: auto; padding: 24px 23px 20px; }
+      .side { display: grid; grid-template-columns: 1fr 1fr; }
+      .tip-panel { min-height: 172px; }
+      .intro-note { max-width: 180px; }
+      .studio-grid { grid-template-columns: 1fr; }
+      .corpus-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 500px) {
+      .shell { padding: 0 16px; }
+      .top-meta { gap: 10px; }
+      .brand { font-size: 17px; }
+      .main-nav { overflow-x: auto; justify-content: flex-start; }
+      .nav-button { flex: 0 0 auto; }
+      .online-label { display: none; }
+      .intro { align-items: start; flex-direction: column; gap: 13px; }
+      .intro-note { max-width: 270px; }
+      .practice { padding: 20px 17px; }
+      .phrase-area { min-height: 190px; }
+      .record-row { align-items: flex-start; flex-direction: column; }
+      .record-actions { width: 100%; }
+      .record-button { flex: 1; }
+      .side { grid-template-columns: 1fr; }
+      .tip-panel { min-height: 155px; }
+      .skill-strip { grid-template-columns: repeat(2, 1fr); }
+      .skill-item:nth-child(2n) { border-right: 0; }
+      .skill-item:last-child { grid-column: span 2; border-top: 1px solid var(--line); }
+      .section-heading { align-items: flex-start; flex-direction: column; }
+      .corpus-grid, .knowledge-grid { grid-template-columns: 1fr; }
+      .studio-panel, .knowledge-card { padding: 19px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="shell topbar">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">v</span><span class="brand-name">Vocal<span>Flow</span></span></div>
+    <nav class="main-nav" aria-label="Main navigation">
+      <button class="nav-button active" type="button" data-view="practice" aria-current="page">Practice</button>
+      <button class="nav-button" type="button" data-view="corpus">Scenario library</button>
+      <button class="nav-button" type="button" data-view="rhythm">Rhythm studio</button>
+      <button class="nav-button" type="button" data-view="knowledge">Knowledge bank</button>
+    </nav>
+    <div class="top-meta">
+      <span class="online-label"><span class="online-dot"></span>Daily practice</span>
+      <span class="locale">EN <span aria-hidden="true">·</span> HK</span>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Business English · Hong Kong</p>
+        <h1 id="page-title">Find your speaking flow.</h1>
+      </div>
+      <p class="intro-note">Build confident business English, one clear phrase at a time.</p>
+    </section>
+
+    <section class="view" id="view-practice" aria-label="Speaking practice">
+    <div class="skill-strip" aria-label="Five speaking skills">
+      <div class="skill-item"><strong>Rhythm</strong><span>Stress &amp; pace</span></div>
+      <div class="skill-item"><strong>Reduction</strong><span>Natural weak forms</span></div>
+      <div class="skill-item"><strong>Linking</strong><span>Connected speech</span></div>
+      <div class="skill-item"><strong>Intonation</strong><span>Pitch movement</span></div>
+      <div class="skill-item"><strong>Pronunciation</strong><span>Clear sounds</span></div>
+    </div>
+    <div class="workspace">
+      <section class="practice" aria-label="Speaking practice">
+        <div class="practice-top">
+          <div class="session-label"><span aria-hidden="true">◉</span><strong>Quick practice</strong><span>·</span><span id="category-label">Meetings</span></div>
+          <span class="counter" id="counter">Phrase 01</span>
+        </div>
+        <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+
+        <div class="phrase-area" aria-live="polite">
+          <span class="phrase-tag" id="phrase-tag">Sharing an update</span>
+          <p class="phrase" id="phrase">“Let me walk you through the latest numbers.”</p>
+          <p class="phrase-hint" id="phrase-hint">Keep a steady pace. Give “latest” a clear final consonant.</p>
+          <div class="speech-cues" id="speech-cues" aria-label="Pronunciation and intonation cues"></div>
+        </div>
+
+        <div class="divider"></div>
+        <div class="listen-row">
+          <div class="listen-copy"><strong>Listen to the model</strong><span>British English · generated voice</span></div>
+          <button class="listen-button" id="listen-button" type="button" aria-label="Play model pronunciation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4H4Z"/><path d="M17 9a5 5 0 0 1 0 6M19.5 6.5a9 9 0 0 1 0 11"/></svg>
+            Play model
+          </button>
+        </div>
+        <div class="divider"></div>
+
+        <div class="record-area">
+          <div class="record-row">
+            <div class="record-copy"><strong>Your turn</strong><span id="record-hint">Allow microphone access to begin.</span></div>
+            <div class="record-actions">
+              <button class="record-button" id="record-button" type="button" aria-label="Start recording">
+                <svg id="record-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/></svg>
+                <span id="record-label">Start recording</span>
+              </button>
+              <button class="icon-button next-button" id="next-button" type="button" aria-label="Next phrase" title="Next phrase">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+              </button>
+            </div>
+          </div>
+          <p class="status" id="status" role="status" aria-live="polite">Your recording stays in this browser session. Speech recognition may use your browser provider's service.</p>
+          <div class="wave-wrap" id="wave-wrap" hidden>
+            <div class="wave-head"><strong>Your vocal wave</strong><span>Amplitude over time · not a pronunciation score</span></div>
+            <canvas class="waveform" id="waveform" role="img" aria-label="Amplitude waveform of your microphone recording"></canvas>
+          </div>
+          <div class="feedback" id="feedback" aria-live="polite">
+            <div class="feedback-head"><p class="feedback-title">Recognized words · text match</p><span class="score" id="score">—</span></div>
+            <p class="heard" id="heard"></p>
+            <audio class="recording-player" id="recording-player" controls hidden></audio>
+            <p class="feedback-note" id="feedback-note">This estimates word match only. It does not assess accent, intonation, or sound similarity.</p>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side" aria-label="Practice details">
+        <section class="side-panel">
+          <h2>Today's rhythm</h2>
+          <div class="goal">
+            <div class="goal-ring" aria-label="3 of 10 phrases practiced"><span id="goal-count">03</span></div>
+            <div class="goal-copy"><strong id="goal-title">A little every day</strong><span id="goal-description">3 of 10 phrases in today's session</span></div>
+          </div>
+          <div class="stat-list">
+            <div><span class="stat-label">Practiced</span><span class="stat-value" id="practiced-count">3</span></div>
+            <div><span class="stat-label">Best text match</span><span class="stat-value" id="best-score">—</span></div>
+          </div>
+        </section>
+        <section class="side-panel tip-panel">
+          <h2>Delivery note</h2>
+          <p id="delivery-tip">A brief pause before your key point helps the room follow along.</p>
+          <span>ONE THOUGHT TO TAKE INTO YOUR NEXT MEETING</span>
+        </section>
+      </aside>
+    </div>
+    </section>
+
+    <section class="view" id="view-corpus" aria-label="Business scenario library" hidden>
+      <div class="section-heading">
+        <div><p class="eyebrow">Speak for the moment</p><h2>Business scenario library</h2></div>
+        <p>Choose a real workplace situation. Listen, shadow the model, and practise at your own pace.</p>
+      </div>
+      <div class="filter-row" id="corpus-filters" aria-label="Filter by scenario"></div>
+      <div class="corpus-grid" id="corpus-grid"></div>
+    </section>
+
+    <section class="view" id="view-rhythm" aria-label="Rhythm studio" hidden>
+      <div class="section-heading">
+        <div><p class="eyebrow">Find the beat</p><h2>Rhythm studio</h2></div>
+        <p>Feel the beat, then grow a business phrase in small, manageable chunks.</p>
+      </div>
+      <div class="studio-grid">
+        <section class="studio-panel">
+          <h3>Metronome</h3>
+          <p>Set a comfortable pulse. Notice how stressed words land on the beat while smaller words flow between them.</p>
+          <div class="tempo-display">
+            <div class="tempo-number"><span id="tempo-value">72</span><small>BEATS PER MINUTE</small></div>
+            <div class="beat-dots" id="beat-dots" aria-label="Four-beat meter">
+              <span class="beat-dot"></span><span class="beat-dot"></span><span class="beat-dot"></span><span class="beat-dot"></span>
+            </div>
+          </div>
+          <label class="tempo-controls" for="tempo-slider"><span class="stat-label">Tempo</span><input id="tempo-slider" type="range" min="40" max="120" value="72"><output id="tempo-output" for="tempo-slider">72 BPM</output></label>
+          <div class="metronome-actions"><button class="primary-small" id="metronome-toggle" type="button">Start metronome</button><button class="secondary-small" id="metronome-reset" type="button">Reset</button></div>
+        </section>
+        <section class="studio-panel">
+          <h3>Build the phrase</h3>
+          <p>Tap each step. Keep the beat steady as the thought gets longer.</p>
+          <div class="step-list" id="rhythm-steps">
+            <button class="step-button active" type="button" data-step="0"><span>01</span><strong>Good morning.</strong></button>
+            <button class="step-button" type="button" data-step="1"><span>02</span><strong>Good morning, everyone.</strong></button>
+            <button class="step-button" type="button" data-step="2"><span>03</span><strong>Good morning, everyone. Thanks for joining.</strong></button>
+            <button class="step-button" type="button" data-step="3"><span>04</span><strong>Good morning, everyone. Thanks for joining on time.</strong></button>
+          </div>
+          <div class="build-sentence" id="build-sentence" aria-live="polite">Good morning.</div>
+          <p>Tip: give <strong>morning</strong> and <strong>joining</strong> a clear beat; let the other words stay light.</p>
+        </section>
+      </div>
+    </section>
+
+    <section class="view" id="view-knowledge" aria-label="Pronunciation knowledge bank" hidden>
+      <div class="section-heading">
+        <div><p class="eyebrow">Learn · notice · use</p><h2>Pronunciation knowledge bank</h2></div>
+        <p>Quick, practical notes on the sound patterns that make spoken English flow.</p>
+      </div>
+      <div class="knowledge-grid">
+        <article class="knowledge-card"><span class="rule-label">Connected speech · Linking</span><h3>Join a consonant to a following vowel</h3><p>When one word ends in a consonant and the next begins with a vowel, connect them smoothly without adding a pause.</p><div class="rule-example">turn‿it‿on<small>“Turn it on” · keep the words connected</small></div></article>
+        <article class="knowledge-card"><span class="rule-label">Connected speech · Reduction</span><h3>Let small grammar words go light</h3><p>Common function words are often shorter and weaker in a sentence. Keep the key meaning words clearer.</p><div class="rule-example">/tə/ · /ən/ · /əv/<small>to · and · of · reduced forms vary by context</small></div></article>
+        <article class="knowledge-card"><span class="rule-label">Stress · Rhythm</span><h3>Give content words the main beats</h3><p>English often alternates prominent meaning words with quicker, quieter grammar words. Avoid giving every syllable equal weight.</p><div class="rule-example">SEND the FILE by FOUR.<small>Make the key words prominent; keep the rest flowing</small></div></article>
+        <article class="knowledge-card"><span class="rule-label">Pitch · Intonation</span><h3>Use pitch to signal your meaning</h3><p>A falling contour often signals completion. A rising contour can invite confirmation or show that your thought continues.</p><div class="rule-example">That works for you ↗?<small>Let the pitch rise gently on a genuine check-in</small></div></article>
+        <article class="knowledge-card"><span class="rule-label">Sound clarity · Pronunciation</span><h3>Finish the final consonants</h3><p>Clear word endings help listeners distinguish key workplace terms. Release the final sound without adding an extra vowel.</p><div class="rule-example">report /rɪˈpɔːt/ · task /tɑːsk/<small>Example IPA uses a broad British-English reference</small></div></article>
+        <article class="knowledge-card" id="quiz-card"><span class="rule-label" id="quiz-label">Speaking challenge · 1 of 3</span><h3 id="quiz-question">In “send the file”, which words carry the main beats?</h3><p id="quiz-instruction">Choose the words that usually carry the main meaning and stress.</p><div class="quiz-options" id="quiz-options"></div><p class="quiz-result" id="quiz-result" aria-live="polite">Choose an answer to check your understanding.</p></article>
+      </div>
+    </section>
+    <p class="footnote">Model audio uses your browser's speech engine. Text match uses browser speech recognition where available; it is not an accent or pronunciation assessment. Speech recognition may send audio to your browser provider. Microphone access works on HTTPS or localhost.</p>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    const phrases = [
+      { category: "Meetings", tag: "Sharing an update", text: "Let me walk you through the latest numbers.", hint: "Keep a steady pace. Give “latest” a clear final consonant.", tip: "A brief pause before your key point helps the room follow along." },
+      { category: "Client calls", tag: "Clarifying a request", text: "Could you clarify what the priority is for this week?", hint: "Stress “clarify” and “priority” to make the question easy to follow.", tip: "A warm, rising tone can make a clarification sound collaborative." },
+      { category: "Presentations", tag: "Making a recommendation", text: "Based on these results, I would recommend a phased rollout.", hint: "Link “would recommend” smoothly, without rushing the key terms.", tip: "Signal your recommendation clearly, then leave a beat for questions." },
+      { category: "Networking", tag: "Starting a conversation", text: "What has your team been focusing on recently?", hint: "Keep the question relaxed and let “recently” land clearly.", tip: "An open-ended question gives the other person room to share." },
+      { category: "Negotiation", tag: "Finding common ground", text: "I think we can find an approach that works for both teams.", hint: "Emphasize “works for both teams” to bring out the shared goal.", tip: "Frame options around shared outcomes, not just positions." },
+      { category: "Meetings", tag: "Asking for input", text: "I would be interested to hear your perspective on this.", hint: "Use a measured pace and soften “interested” rather than over-stressing it.", tip: "Invite quieter voices in before the conversation moves on." },
+      { category: "Client calls", tag: "Following up", text: "I will send a summary with the next steps this afternoon.", hint: "Make the timing phrase “this afternoon” precise and easy to catch.", tip: "Close a call with an owner and a clear next step." },
+      { category: "Presentations", tag: "Moving to a new point", text: "With that in mind, let us look at the second option.", hint: "A small pause after “mind” makes the transition feel more deliberate.", tip: "A signpost phrase helps listeners keep their place." },
+      { category: "Networking", tag: "Introducing your role", text: "I work with regional teams to improve the customer experience.", hint: "Keep the word groups connected: “regional teams” and “customer experience.”", tip: "A concise introduction makes it easy for others to ask a follow-up." },
+      { category: "Negotiation", tag: "Discussing a timeline", text: "Would it be possible to bring the review forward by a week?", hint: "Keep “would it be possible” clear, then emphasize the proposed timing.", tip: "Pair a request with a specific, realistic alternative." },
+      { category: "Meetings", tag: "Summarising a decision", text: "So we are aligned on the timeline and the key deliverables.", hint: "Give “timeline” and “deliverables” equal weight in your summary.", tip: "End a decision recap by checking that everyone is aligned." },
+      { category: "Client calls", tag: "Managing expectations", text: "We are on track to share an update by Thursday afternoon.", hint: "Say the deadline clearly; avoid letting the final words trail off.", tip: "A concrete time builds trust and prevents crossed wires." }
+    ];
+
+    const phraseCues = [
+      ["Rhythm · WALK you THROUGH", "Link · walk‿you", "Intonation · update ↘", "IPA · latest /ˈleɪtɪst/"],
+      ["Rhythm · CLARify / PRIoRity", "Reduction · could you /kədʒə/", "Link · clarify‿what", "Intonation · question ↗"],
+      ["Rhythm · reCOMMEND", "Reduction · would /wəd/", "Link · would‿recommend", "IPA · phased /feɪzd/"],
+      ["Rhythm · team / FOcusing", "Reduction · has your /həzjə/", "Link · focusing‿on", "Intonation · recently ↘"],
+      ["Rhythm · WORKS / BOTH teams", "Reduction · can /kən/", "Link · works‿for", "Intonation · shared outcome ↘"],
+      ["Rhythm · interested / PERSpective", "Reduction · to /tə/", "Link · interested‿to", "IPA · perspective /pəˈspektɪv/"],
+      ["Rhythm · SEND / NEXT steps", "Reduction · will /əl/", "Link · send‿a", "IPA · afternoon /ˌɑːftəˈnuːn/"],
+      ["Rhythm · mind / LOOK", "Reduction · let us /lɛts/", "Link · that‿in", "Intonation · transition ↘"],
+      ["Rhythm · REGional / CUSTOMER", "Reduction · to /tə/", "Link · work‿with", "IPA · regional /ˈriːdʒənəl/"],
+      ["Rhythm · POSSible / WEEK", "Reduction · would it /wʊdɪt/", "Link · bring‿it", "Intonation · request ↗"],
+      ["Rhythm · aLIGNED / TIMEline", "Reduction · we are /wɪə/", "Link · on‿the", "IPA · deliverables /dɪˈlɪvərəbəlz/"],
+      ["Rhythm · TRACK / THURSday", "Reduction · we are /wɪə/", "Link · on‿track", "Intonation · deadline ↘"]
+    ];
+
+    const quizQuestions = [
+      {
+        question: "In “send the file”, which words carry the main beats?",
+        instruction: "Choose the words that usually carry the main meaning and stress.",
+        options: ["the · the", "send · file", "send · the"],
+        answer: 1,
+        explanation: "Content words like “send” and “file” usually carry the main beats."
+      },
+      {
+        question: "Where can you link the words smoothly?",
+        instruction: "Choose the connected-speech example.",
+        options: ["send‿it", "send / it", "send — (pause) — it"],
+        answer: 0,
+        explanation: "The final consonant in “send” can flow into the vowel at the start of “it”."
+      },
+      {
+        question: "How might “Does that work for you?” end?",
+        instruction: "Choose a natural pitch shape for a genuine check-in.",
+        options: ["A gentle rise ↗", "A firm fall ↘", "Same stress on every word"],
+        answer: 0,
+        explanation: "A gentle rise can invite confirmation; pitch depends on context and intention."
+      }
+    ];
+
+    const $ = (id) => document.getElementById(id);
+    const recognitionAvailable = "SpeechRecognition" in window || "webkitSpeechRecognition" in window;
+    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let order = [];
+    let phraseIndex = 0;
+    let practiced = 3;
+    let bestScore = 0;
+    let mediaRecorder;
+    let mediaStream;
+    let chunks = [];
+    let recognition;
+    let recognizedText = "";
+    let recognitionFailed = false;
+    let mediaDone = false;
+    let recognitionDone = true;
+    let finalized = false;
+    let recording = false;
+    let recordingUrl;
+    let toastTimer;
+    let waveformContext;
+    let waveformAnalyser;
+    let waveformSource;
+    let waveformFrame;
+    let waveformSamples = [];
+    let metronomeContext;
+    let metronomeTimer;
+    let metronomeBeat = 0;
+    let corpusCategory = "All";
+    let quizIndex = 0;
+    let quizScore = 0;
+    let quizAnswered = false;
+
+    function shuffleOrder() {
+      order = phrases.map((_, index) => index);
+      for (let index = order.length - 1; index > 0; index--) {
+        const swap = Math.floor(Math.random() * (index + 1));
+        [order[index], order[swap]] = [order[swap], order[index]];
+      }
+      phraseIndex = 0;
+    }
+
+    function currentPhrase() { return phrases[order[phraseIndex]]; }
+
+    function showPhrase() {
+      const item = currentPhrase();
+      $("category-label").textContent = item.category;
+      $("phrase-tag").textContent = item.tag;
+      $("phrase").textContent = `“${item.text}”`;
+      $("phrase-hint").textContent = item.hint;
+      $("speech-cues").replaceChildren(...phraseCues[order[phraseIndex]].map((cueText) => {
+        const cue = document.createElement("span");
+        const separator = cueText.indexOf(" · ");
+        const label = document.createElement("strong");
+        label.textContent = cueText.slice(0, separator);
+        cue.append(label, document.createTextNode(cueText.slice(separator)));
+        cue.className = "cue";
+        return cue;
+      }));
+      $("delivery-tip").textContent = item.tip;
+      $("counter").textContent = `Phrase ${String(phraseIndex + 1).padStart(2, "0")}`;
+      $("progress-bar").style.width = `${((phraseIndex + 1) / phrases.length) * 100}%`;
+      $("feedback").classList.remove("visible");
+      $("recording-player").hidden = true;
+      $("recording-player").pause();
+      if (recordingUrl) URL.revokeObjectURL(recordingUrl);
+      recordingUrl = undefined;
+      $("recording-player").removeAttribute("src");
+      $("wave-wrap").hidden = true;
+      cancelAnimationFrame(waveformFrame);
+      waveformSource?.disconnect();
+      waveformSource = undefined;
+      waveformAnalyser = undefined;
+      waveformSamples = [];
+      $("status").textContent = recognitionAvailable ? "Your recording stays in this browser session. Speech recognition may use your browser provider's service." : "Recording is available, but speech recognition is not supported in this browser.";
+    }
+
+    function speakModel() {
+      if (!("speechSynthesis" in window)) {
+        showToast("Speech playback is not supported in this browser.");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(currentPhrase().text);
+      utterance.lang = "en-GB";
+      utterance.rate = 0.88;
+      const voices = window.speechSynthesis.getVoices();
+      const britishVoice = voices.find((voice) => voice.lang === "en-GB");
+      if (britishVoice) utterance.voice = britishVoice;
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function normalize(text) {
+      return text.toLowerCase().replace(/[^a-z0-9\s']/g, " ").replace(/\s+/g, " ").trim().split(" ").filter(Boolean);
+    }
+
+    function matchPercentage(expected, actual) {
+      const target = normalize(expected);
+      const heard = normalize(actual);
+      if (!target.length) return 0;
+      const previous = Array.from({ length: heard.length + 1 }, (_, index) => index);
+      let row = previous;
+      for (let i = 1; i <= target.length; i++) {
+        row = [i];
+        for (let j = 1; j <= heard.length; j++) {
+          row[j] = Math.min(row[j - 1] + 1, previous[j] + 1, previous[j - 1] + (target[i - 1] === heard[j - 1] ? 0 : 1));
+        }
+        for (let j = 0; j < row.length; j++) previous[j] = row[j];
+      }
+      return Math.max(0, Math.round((1 - previous[heard.length] / target.length) * 100));
+    }
+
+    function showToast(message) {
+      const toast = $("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.clearTimeout(toastTimer);
+      toastTimer = window.setTimeout(() => toast.classList.remove("show"), 3300);
+    }
+
+    function drawWaveform() {
+      if (!waveformAnalyser) return;
+      const canvas = $("waveform");
+      const bounds = canvas.getBoundingClientRect();
+      const pixelRatio = window.devicePixelRatio || 1;
+      const width = Math.max(1, Math.floor(bounds.width * pixelRatio));
+      const height = Math.max(1, Math.floor(bounds.height * pixelRatio));
+      if (canvas.width !== width || canvas.height !== height) {
+        canvas.width = width;
+        canvas.height = height;
+      }
+      const context = canvas.getContext("2d");
+      if (!context) {
+        showToast("Could not display the microphone waveform in this browser.");
+        return;
+      }
+      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      context.clearRect(0, 0, bounds.width, bounds.height);
+      context.beginPath();
+      context.lineWidth = 1.5;
+      context.strokeStyle = "#245c47";
+      const samples = new Uint8Array(waveformAnalyser.fftSize);
+      waveformAnalyser.getByteTimeDomainData(samples);
+      let totalPower = 0;
+      for (const sample of samples) {
+        const deviation = (sample - 128) / 128;
+        totalPower += deviation * deviation;
+      }
+      waveformSamples.push(Math.sqrt(totalPower / samples.length));
+      const sampleCount = waveformSamples.length;
+      for (let x = 0; x < bounds.width; x += 1) {
+        const start = Math.floor((x / bounds.width) * sampleCount);
+        const end = Math.min(sampleCount, Math.max(start + 1, Math.floor(((x + 1) / bounds.width) * sampleCount)));
+        let maximum = 0;
+        for (let index = start; index < end; index++) {
+          maximum = Math.max(maximum, waveformSamples[index]);
+        }
+        const amplitude = maximum * bounds.height / 2;
+        context.moveTo(x, bounds.height / 2 - amplitude);
+        context.lineTo(x, bounds.height / 2 + amplitude);
+      }
+      context.stroke();
+      waveformFrame = requestAnimationFrame(drawWaveform);
+    }
+
+    async function startWaveform(stream) {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) {
+        showToast("Live waveform display is not supported in this browser.");
+        return;
+      }
+      try {
+        waveformContext ||= new AudioContextClass();
+        await waveformContext.resume();
+        if (!recording) return;
+        waveformAnalyser = waveformContext.createAnalyser();
+        waveformAnalyser.fftSize = 1024;
+        waveformSource = waveformContext.createMediaStreamSource(stream);
+        waveformSource.connect(waveformAnalyser);
+        $("wave-wrap").hidden = false;
+        drawWaveform();
+      } catch (error) {
+        waveformAnalyser = undefined;
+        showToast(`Could not start waveform display: ${error.message}`);
+      }
+    }
+
+    function showView(name) {
+      document.querySelectorAll(".view").forEach((view) => { view.hidden = view.id !== `view-${name}`; });
+      document.querySelectorAll(".nav-button").forEach((button) => {
+        const active = button.dataset.view === name;
+        button.classList.toggle("active", active);
+        if (active) button.setAttribute("aria-current", "page");
+        else button.removeAttribute("aria-current");
+      });
+    }
+
+    function renderCorpus() {
+      const categories = ["All", ...new Set(phrases.map((item) => item.category))];
+      $("corpus-filters").replaceChildren(...categories.map((category) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `filter-button${category === corpusCategory ? " active" : ""}`;
+        button.textContent = category;
+        button.setAttribute("aria-pressed", String(category === corpusCategory));
+        button.addEventListener("click", () => {
+          corpusCategory = category;
+          renderCorpus();
+        });
+        return button;
+      }));
+      const matching = phrases.map((item, index) => ({ item, index })).filter(({ item }) => corpusCategory === "All" || item.category === corpusCategory);
+      $("corpus-grid").replaceChildren(...matching.map(({ item, index }) => {
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "corpus-card";
+        card.setAttribute("aria-label", `Practise ${item.category}: ${item.tag}`);
+        const category = document.createElement("span");
+        category.className = "card-category";
+        category.textContent = item.category;
+        const title = document.createElement("strong");
+        title.textContent = item.text;
+        const meta = document.createElement("span");
+        meta.className = "card-meta";
+        meta.textContent = `${item.tag} · Shadowing practice`;
+        card.append(category, title, meta);
+        card.addEventListener("click", () => {
+          order = [index, ...phrases.map((_, phraseNumber) => phraseNumber).filter((phraseNumber) => phraseNumber !== index)];
+          phraseIndex = 0;
+          showPhrase();
+          showView("practice");
+        });
+        return card;
+      }));
+    }
+
+    function playMetronomeBeat() {
+      if (!metronomeContext) return;
+      const oscillator = metronomeContext.createOscillator();
+      const gain = metronomeContext.createGain();
+      oscillator.frequency.value = metronomeBeat % 4 === 0 ? 880 : 620;
+      gain.gain.setValueAtTime(0.0001, metronomeContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.16, metronomeContext.currentTime + 0.008);
+      gain.gain.exponentialRampToValueAtTime(0.0001, metronomeContext.currentTime + 0.07);
+      oscillator.connect(gain);
+      gain.connect(metronomeContext.destination);
+      oscillator.start();
+      oscillator.stop(metronomeContext.currentTime + 0.075);
+      document.querySelectorAll(".beat-dot").forEach((dot, index) => dot.classList.toggle("active", index === metronomeBeat % 4));
+      metronomeBeat += 1;
+    }
+
+    async function startMetronome() {
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContextClass) {
+        showToast("Metronome audio is not supported in this browser.");
+        return;
+      }
+      try {
+        metronomeContext ||= new AudioContextClass();
+        await metronomeContext.resume();
+        window.clearInterval(metronomeTimer);
+        metronomeBeat = 0;
+        playMetronomeBeat();
+        const interval = 60000 / Number($("tempo-slider").value);
+        metronomeTimer = window.setInterval(playMetronomeBeat, interval);
+        $("metronome-toggle").textContent = "Stop metronome";
+      } catch (error) {
+        showToast(`Could not start metronome: ${error.message}`);
+      }
+    }
+
+    function stopMetronome() {
+      window.clearInterval(metronomeTimer);
+      metronomeTimer = undefined;
+      document.querySelectorAll(".beat-dot").forEach((dot) => dot.classList.remove("active"));
+      $("metronome-toggle").textContent = "Start metronome";
+    }
+
+    function renderQuiz() {
+      const options = $("quiz-options");
+      if (quizIndex >= quizQuestions.length) {
+        $("quiz-label").textContent = "Challenge complete";
+        $("quiz-question").textContent = "Nice work. You finished the speaking challenge.";
+        $("quiz-instruction").textContent = `Your score: ${quizScore} of ${quizQuestions.length}.`;
+        $("quiz-result").textContent = quizScore === quizQuestions.length ? "Perfect score. You have a good ear for these patterns." : "Review the rules above, then try the challenge again.";
+        options.replaceChildren();
+        const restart = document.createElement("button");
+        restart.type = "button";
+        restart.className = "primary-small";
+        restart.textContent = "Play again";
+        restart.addEventListener("click", () => {
+          quizIndex = 0;
+          quizScore = 0;
+          renderQuiz();
+        });
+        options.append(restart);
+        return;
+      }
+      const question = quizQuestions[quizIndex];
+      quizAnswered = false;
+      $("quiz-label").textContent = `Speaking challenge · ${quizIndex + 1} of ${quizQuestions.length}`;
+      $("quiz-question").textContent = question.question;
+      $("quiz-instruction").textContent = question.instruction;
+      $("quiz-result").textContent = "Choose an answer to check your understanding.";
+      options.replaceChildren(...question.options.map((text, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "quiz-option";
+        button.textContent = text;
+        button.addEventListener("click", () => {
+          if (quizAnswered) return;
+          quizAnswered = true;
+          const correct = index === question.answer;
+          if (correct) quizScore += 1;
+          options.querySelectorAll(".quiz-option").forEach((option) => { option.disabled = true; });
+          $("quiz-result").textContent = `${correct ? "Correct. " : "Not quite. "}${question.explanation}`;
+          $("quiz-result").style.color = correct ? "var(--green)" : "var(--coral)";
+          const next = document.createElement("button");
+          next.type = "button";
+          next.className = "secondary-small";
+          next.textContent = quizIndex + 1 === quizQuestions.length ? "See your score" : "Next question";
+          next.addEventListener("click", () => {
+            quizIndex += 1;
+            renderQuiz();
+          });
+          options.append(next);
+        });
+        return button;
+      }));
+    }
+
+    function startRecognition() {
+      recognizedText = "";
+      recognitionFailed = false;
+      if (!Recognition) return;
+      recognition = new Recognition();
+      recognition.lang = "en-GB";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+      recognition.onresult = (event) => { recognizedText = event.results[0][0].transcript; };
+      recognition.onerror = () => { recognitionFailed = true; };
+      recognition.onend = () => {
+        recognitionDone = true;
+        finishIfReady();
+      };
+      recognition.start();
+    }
+
+    function finishIfReady() {
+      if (mediaDone && recognitionDone && !finalized) finishRecording();
+    }
+
+    async function startRecording() {
+      if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+        showToast("Audio recording is not supported in this browser.");
+        return;
+      }
+      try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        chunks = [];
+        waveformSamples = [];
+        mediaDone = false;
+        recognitionDone = !Recognition;
+        finalized = false;
+        mediaRecorder = new MediaRecorder(mediaStream);
+        mediaRecorder.ondataavailable = (event) => { if (event.data.size) chunks.push(event.data); };
+        mediaRecorder.onstop = () => {
+          mediaDone = true;
+          finishIfReady();
+        };
+        mediaRecorder.start();
+        startWaveform(mediaStream);
+        recording = true;
+        $("next-button").disabled = true;
+        $("record-button").classList.add("recording");
+        $("record-button").setAttribute("aria-label", "Stop recording");
+        $("record-label").textContent = "Stop recording";
+        $("record-icon").innerHTML = '<rect x="7" y="7" width="10" height="10" rx="1" fill="currentColor" stroke="none"/>';
+        $("record-hint").textContent = "Recording now · speak naturally, then stop";
+        $("status").textContent = "Listening...";
+        try { startRecognition(); } catch {
+          recognitionFailed = true;
+          recognitionDone = true;
+        }
+      } catch (error) {
+        const message = error.name === "NotAllowedError" ? "Microphone permission was denied. Allow access in your browser settings to record." : "Could not access the microphone. Check your device and try again.";
+        showToast(message);
+        $("status").textContent = message;
+      }
+    }
+
+    function stopRecording() {
+      if (!recording) return;
+      recording = false;
+      cancelAnimationFrame(waveformFrame);
+      waveformSource?.disconnect();
+      waveformSource = undefined;
+      waveformAnalyser = undefined;
+      $("record-button").classList.remove("recording");
+      $("record-button").setAttribute("aria-label", "Start recording");
+      $("next-button").disabled = false;
+      $("record-label").textContent = "Record again";
+      $("record-icon").innerHTML = '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3" fill="currentColor" stroke="none"/>';
+      $("record-hint").textContent = "Review your words, then try the next phrase.";
+      if (mediaRecorder?.state === "recording") mediaRecorder.stop();
+      if (recognition) {
+        try { recognition.stop(); } catch { recognitionFailed = true; }
+      }
+    }
+
+    function finishRecording() {
+      finalized = true;
+      mediaStream?.getTracks().forEach((track) => track.stop());
+      const blob = new Blob(chunks, { type: mediaRecorder.mimeType || "audio/webm" });
+      const player = $("recording-player");
+      recordingUrl = URL.createObjectURL(blob);
+      player.src = recordingUrl;
+      player.hidden = false;
+      practiced += 1;
+      $("practiced-count").textContent = practiced;
+      const goalCount = Math.min(practiced, 10);
+      $("goal-count").textContent = String(goalCount).padStart(2, "0");
+      $("goal-description").textContent = `${goalCount} of 10 phrases in today's session`;
+      $("goal-title").textContent = practiced >= 10 ? "Daily goal reached" : "A little every day";
+      $("goal-count").parentElement.setAttribute("aria-label", `${goalCount} of 10 phrases practiced`);
+
+      if (!recognitionAvailable) {
+        $("status").textContent = "Recording ready to play. Speech recognition is unavailable in this browser.";
+        return;
+      }
+      if (recognizedText) {
+        const score = matchPercentage(currentPhrase().text, recognizedText);
+        const heardWords = new Set(normalize(recognizedText));
+        const missingWords = [...new Set(normalize(currentPhrase().text).filter((word) => !heardWords.has(word)))];
+        bestScore = Math.max(bestScore, score);
+        $("best-score").textContent = `${bestScore}%`;
+        $("score").textContent = `${score}%`;
+        $("heard").textContent = `We heard: “${recognizedText}”`;
+        $("feedback-note").textContent = missingWords.length
+          ? `Text check: ${missingWords.join(", ")} ${missingWords.length === 1 ? "was" : "were"} not picked up. Try again, focusing on the phrase cues above. This does not diagnose pronunciation.`
+          : "All target words appeared in the transcript. This does not confirm sound accuracy, rhythm, or intonation.";
+        $("feedback").classList.add("visible");
+        $("status").textContent = "Recording ready. Play it back, or continue to the next phrase.";
+      } else {
+        $("status").textContent = recognitionFailed ? "Recording saved for playback. Speech recognition could not return a transcript." : "Recording ready. No transcript returned; you can listen back and try again.";
+      }
+    }
+
+    function nextPhrase() {
+      if (recording) {
+        showToast("Stop your recording before continuing.");
+        return;
+      }
+      window.speechSynthesis?.cancel();
+      phraseIndex += 1;
+      if (phraseIndex >= order.length) shuffleOrder();
+      showPhrase();
+    }
+
+    $("listen-button").addEventListener("click", speakModel);
+    $("record-button").addEventListener("click", () => recording ? stopRecording() : startRecording());
+    $("next-button").addEventListener("click", nextPhrase);
+    document.querySelectorAll(".nav-button").forEach((button) => button.addEventListener("click", () => {
+      if (recording && button.dataset.view !== "practice") {
+        showToast("Stop your recording before leaving practice.");
+        return;
+      }
+      showView(button.dataset.view);
+    }));
+    $("tempo-slider").addEventListener("input", (event) => {
+      const tempo = Number(event.currentTarget.value);
+      $("tempo-value").textContent = tempo;
+      $("tempo-output").textContent = `${tempo} BPM`;
+      if (metronomeTimer) startMetronome();
+    });
+    $("metronome-toggle").addEventListener("click", () => metronomeTimer ? stopMetronome() : startMetronome());
+    $("metronome-reset").addEventListener("click", () => {
+      stopMetronome();
+      $("tempo-slider").value = 72;
+      $("tempo-value").textContent = "72";
+      $("tempo-output").textContent = "72 BPM";
+    });
+    $("rhythm-steps").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-step]");
+      if (!button) return;
+      document.querySelectorAll(".step-button").forEach((step) => step.classList.toggle("active", step === button));
+      $("build-sentence").textContent = button.querySelector("strong").textContent;
+    });
+    renderCorpus();
+    renderQuiz();
+    shuffleOrder();
+    showPhrase();
+    if (!recognitionAvailable) $("record-hint").textContent = "Record and replay your voice; speech recognition is not supported here.";
+  </script>
+</body>
+</html>
